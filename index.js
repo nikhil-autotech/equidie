@@ -48,7 +48,6 @@ app.use(
 	})
 );
 app.use(bodyparser.json({ limit: '3mb' }));
-// app.use(fileupload());
 
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');

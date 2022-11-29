@@ -440,6 +440,7 @@ let verifyOTP = async (req, res, next) => {
                     } else {
                         obtainUser.isMobile = true;
                     }
+                    obtainUser.otpVerified = true;
                     obtainUser = await obtainUser.save();
                     apiResponse = response.generate1(constants.SUCCESS, obtainUser.adminName, `OTP matched successfully`, constants.HTTP_SUCCESS, null);
                 }

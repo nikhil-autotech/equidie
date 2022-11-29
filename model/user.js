@@ -92,6 +92,10 @@ const userSchema = mongoose.Schema({
                     type: String,
                     default: ''
                 },
+                udhyamNumber: {
+                    type: String,
+                    default: ''
+                },
                 file: {
                     type: String,
                     default: ''
@@ -103,6 +107,10 @@ const userSchema = mongoose.Schema({
             type: {
                 _id: false,
                 name: {
+                    type: String,
+                    default: ''
+                },
+                GSTNumber: {
                     type: String,
                     default: ''
                 },

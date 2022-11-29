@@ -66,6 +66,9 @@ let companyDetails = async (req, res) => {
         if (isUserExist) {
             let data = req.body;
             data["KYCBussiness"] = {};
+            if(req.body.companyDetails.name && req.body.companyDetails.product && req.body.companyDetails.yearOfIncorporation && req.body.companyDetails.industryType && req.body.companyDetails.licenseNumber && req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.PAN.panNumber && req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.bankDetails.bankName && req.body.companyDetails.address){
+                data.isAllCompanyInfoAvailable =true
+            }
             if (req.body.companyDetails.PAN.panNumber && req.body.companyDetails.PAN.file) {
                 data.KYCBussiness["isPANSubmitted"] = true;
             }
@@ -88,7 +91,7 @@ let companyDetails = async (req, res) => {
                 data.KYCBussiness["isCurrentOutStandingLoan"] = true;
             }
             if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {
-                data['isDoneCompanyKYC'] = true;
+                data['isBussinesKYCDone'] = true;
             }
             isUserExist = isTrue ? await userModel.findOneAndUpdate({ email: req.body.userId }, data, { new: true }).lean() : await userModel.findOneAndUpdate({ mobile: req.body.userId }, data, { new: true }).lean();
             let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, isUserExist)
@@ -110,7 +113,7 @@ let personalKYC = async (req, res) => {
     try {
         const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
-        let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isDoneKYC: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isDoneKYC: false }).lean();
+        let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isPersonalKYCDone: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isPersonalKYCDone: false }).lean();
         if (isUserExist) {
         let data = isUserExist;
         data["KYCPersonal"] = {};
@@ -131,7 +134,7 @@ let personalKYC = async (req, res) => {
         }
     }
         if (data.KYCPersonal["isPANSubmitted"] && data.KYCPersonal["isAadharSubmitted"]) {
-            data["isDoneKYC"] = true;
+            data["isPersonalKYCDone"] = true;
         }
         isUserExist = isTrue ? await userModel.findOneAndUpdate({ email: req.body.userId }, data, { new: true, }).lean() : await userModel.findOneAndUpdate({ mobile: req.body.userId }, data, { new: true }).lean();
         let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, isUserExist)
@@ -152,7 +155,7 @@ let businessKYC = async (req, res) => {
     try {
         const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
-        let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isDoneCompanyKYC: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isDoneCompanyKYC: false }).lean();
+        let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isBussinesKYCDone: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isBussinesKYCDone: false }).lean();
         if (isUserExist) {
             let data = isUserExist;
         data["KYCBussiness"] = {};
@@ -213,7 +216,7 @@ let businessKYC = async (req, res) => {
         }
     }
         if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {
-            data['isDoneCompanyKYC'] = true;
+            data['isBussinesKYCDone'] = true;
         }
             isUserExist = isTrue ? await userModel.findOneAndUpdate({ email: req.body.userId }, data, { new: true, }).lean() : await userModel.findOneAndUpdate({ mobile: req.body.userId }, data, { new: true }).lean();
             let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, isUserExist)
@@ -504,6 +507,33 @@ let getById = async (req, res, next) => {
     }
 };
 
+let accountActivation = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        let apiResponse;
+        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
+        let isTrue = regex.test(id);
+        let userData = isTrue ? await userModel.findOne({ email: id }).select('-__v -_id') : await userModel.findOne({ mobile: id }).select('-__v -_id');
+        if (!userData) {
+            apiResponse = response.generate(constants.ERROR, messages.USER.INVALIDUSER, constants.HTTP_NOT_FOUND, null)
+            res.status(400).send(apiResponse);
+            return
+        }
+        else {
+            userData.isKYCVerificationInProgress = 'PROGRESS'; 
+            userData =await userData.save()
+            apiResponse = response.generate(constants.SUCCESS, "success", constants.HTTP_SUCCESS, userData);
+            res.status(200).send(apiResponse);
+            return
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 'fails',
+            message: err,
+        });
+    }
+};
+
 let checkEmail = async (req, res, next) => {
     try {
 
@@ -608,5 +638,6 @@ module.exports = {
     DeleteUser,
     resetPasswordKnownPass,
     personalKYC,
-    businessKYC
+    businessKYC,
+    accountActivation
 }

@@ -136,7 +136,7 @@ const userSchema = mongoose.Schema({
             default: {}
         },
         bankDetails: {
-            bank: {
+            bankName: {
                 type: String,
                 default: ''
             },
@@ -232,21 +232,26 @@ const userSchema = mongoose.Schema({
         },
         default: {}
     },
-    isDoneKYC: {
+    isPersonalKYCDone: {
         type: Boolean,
         default: false
     },
-    isDoneCompanyKYC: {
+    isBussinesKYCDone: {
         type: Boolean,
         default: false
     },
-    isCompanyKYCPartial: {
+    isAllCompanyInfoAvailable: {
         type: Boolean,
         default: false
     },
     isKYCPartial: {
         type: Boolean,
         default: false
+    },
+    isKYCVerificationInProgress: {
+        type: String,
+        default: 'INITIAL',
+        enum:['PROGRESS','FAILED','DONE','INITIAL']
     },
     KYCPersonal: {
         isPANSubmitted: {

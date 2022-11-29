@@ -13,6 +13,7 @@ router.post('/checkEmail', authController.checkEmail);
 router.post('/companyDetails', authController.companyDetails);
 router.post('/personalKYC', authController.personalKYC);
 router.post('/businessKYC', authController.businessKYC);
+router.post('/accountActivation', authController.accountActivation);
 router
 	.route('/:id')
 	.get(authController.getById)

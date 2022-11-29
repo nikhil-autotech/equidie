@@ -69,22 +69,22 @@ let companyDetails = async (req, res) => {
             if (req.body.companyDetails.PAN.panNumber && req.body.companyDetails.PAN.file) {
                 data.KYCBussiness["isPANSubmitted"] = true;
             }
-            if (req.body.companyDetails.udhyamDetails) {
+            if (req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.udhyamDetails.file) {
                 data.KYCBussiness["udhyamDetailsSubmitted"] = true;
             }
-            if (req.body.companyDetails.GST) {
+            if (req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.GST.file) {
                 data.KYCBussiness["isGSTSubmitted"] = true;
             }
-            if (req.body.companyDetails.bankDetails.bankStatement) {
+            if (req.body.companyDetails.bankDetails.bankStatement && req.body.companyDetails.bankDetails.bankStatement.file) {
                 data.KYCBussiness["isStatementSubmitted"] = true;
             }
-            if (req.body.companyDetails.profitLossStatement) {
+            if (req.body.companyDetails.profitLossStatement && req.body.companyDetails.profitLossStatement.file) {
                 data.KYCBussiness["isProfitLossSubmitted"] = true;
             }
-            if (req.body.companyDetails.incomeTaxReturn) {
+            if (req.body.companyDetails.incomeTaxReturn && req.body.companyDetails.incomeTaxReturn.file) {
                 data.KYCBussiness["isIncomeTaxSubmitted"] = true;
             }
-            if (req.body.companyDetails.currentOutstandingLoan) {
+            if (req.body.companyDetails.currentOutstandingLoan && req.body.companyDetails.currentOutstandingLoan.file) {
                 data.KYCBussiness["isCurrentOutStandingLoan"] = true;
             }
             if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {
@@ -149,10 +149,10 @@ let businessKYC = async (req, res) => {
         if (req.body.companyDetails.PAN.panNumber && req.body.companyDetails.PAN.file) {
             data.KYCBussiness["isPANSubmitted"] = true;
         }
-        if (req.body.companyDetails.udhyamDetails && req.body.companyDetails.udhyamDetails.file) {
+        if (req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.udhyamDetails.file) {
             data.KYCBussiness["udhyamDetailsSubmitted"] = true;
         }
-        if (req.body.companyDetails.GST && req.body.companyDetails.GST.file) {
+        if (req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.GST.file) {
             data.KYCBussiness["isGSTSubmitted"] = true;
         }
         if (req.body.companyDetails.bankDetails.bankStatement && req.body.companyDetails.bankDetails.bankStatement.file) {

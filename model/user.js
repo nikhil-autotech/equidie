@@ -129,14 +129,18 @@ const userSchema = mongoose.Schema({
                 default: ''
             },
             bankStatement: {
-                name: {
-                    type: String,
-                    default: ''
+                type: {
+                    _id:false,
+                    name: {
+                        type: String,
+                        default: ''
+                    },
+                    file: {
+                        type: String,
+                        default: ''
+                    }
                 },
-                file: {
-                    type: String,
-                    default: ''
-                }
+                default:{}
             }
         },
         profitLossStatement: {
@@ -188,15 +192,15 @@ const userSchema = mongoose.Schema({
             default: ''
         }
     },
-    isDoneKYC:{
+    isDoneKYC: {
         type: Boolean,
         default: false
     },
-    isDoneCompanyKYC:{
+    isDoneCompanyKYC: {
         type: Boolean,
         default: false
     },
-    isCompanyKYCPartial:{
+    isCompanyKYCPartial: {
         type: Boolean,
         default: false
     },

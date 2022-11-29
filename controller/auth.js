@@ -59,36 +59,77 @@ let registration = async (req, res) => {
 
 let companyDetails = async (req, res) => {
     try {
-        // const validRequest =  await authschema.validUser.validateAsync(req.body)
         const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isCompanyKYCPartial: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isCompanyKYCPartial: false }).lean();
         if (isUserExist) {
-            let data = req.body;
+            let data = isUserExist;
             data["KYCBussiness"] = {};
-            if(req.body.companyDetails.name && req.body.companyDetails.product && req.body.companyDetails.yearOfIncorporation && req.body.companyDetails.industryType && req.body.companyDetails.licenseNumber && req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.PAN.panNumber && req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.bankDetails.bankName && req.body.companyDetails.address){
-                data.isAllCompanyInfoAvailable =true
+            if (req.body.companyDetails.name && req.body.companyDetails.product && req.body.companyDetails.yearOfIncorporation && req.body.companyDetails.industryType && req.body.companyDetails.licenseNumber && req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.PAN.panNumber && req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.bankDetails.bankName && req.body.companyDetails.address) {
+                data.companyDetails.bankDetails.bankName = req.body.companyDetails.bankDetails.bankName ? req.body.companyDetails.bankDetails.bankName : data.companyDetails.bankDetails.bankName;
+                data.companyDetails.name = req.body.companyDetails.name ? req.body.companyDetails.name : data.companyDetails.name;
+                data.companyDetails.address = req.body.companyDetails.address ? req.body.companyDetails.address : data.companyDetails.address;
+                data.companyDetails.product = req.body.companyDetails.product ? req.body.companyDetails.product : data.companyDetails.product;
+                data.companyDetails.yearOfIncorporation = req.body.companyDetails.yearOfIncorporation ? req.body.companyDetails.yearOfIncorporation : data.companyDetails.yearOfIncorporation;
+                data.companyDetails.industryType = req.body.companyDetails.industryType ? req.body.companyDetails.industryType : data.companyDetails.industryType;
+                data.companyDetails.licenseNumber = req.body.companyDetails.licenseNumber ? req.body.companyDetails.licenseNumber : data.companyDetails.licenseNumber;
+                data["isAllCompanyInfoAvailable"] = true;
             }
-            if (req.body.companyDetails.PAN.panNumber && req.body.companyDetails.PAN.file) {
-                data.KYCBussiness["isPANSubmitted"] = true;
+            if (req.body.companyDetails.PAN) {
+                data.companyDetails.PAN.panNumber = req.body.companyDetails.PAN.panNumber ? req.body.companyDetails.PAN.panNumber : data.companyDetails.PAN.panNumber;
+                data.companyDetails.PAN.file = req.body.companyDetails.PAN.file ? req.body.companyDetails.PAN.file : data.companyDetails.PAN.file;
+                if (req.body.companyDetails.PAN.panNumber && req.body.companyDetails.PAN.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isPANSubmitted"] = true;
+                }
             }
-            if (req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.udhyamDetails.file) {
-                data.KYCBussiness["udhyamDetailsSubmitted"] = true;
+            if (req.body.companyDetails.udhyamDetails) {
+                data.companyDetails.udhyamDetails.udhyamNumber = req.body.companyDetails.udhyamDetails.udhyamNumber ? req.body.companyDetails.udhyamDetails.udhyamNumber : data.companyDetails.udhyamDetails.udhyamNumber;
+                data.companyDetails.udhyamDetails.file = req.body.companyDetails.udhyamDetails.file ? req.body.companyDetails.udhyamDetails.file : data.companyDetails.udhyamDetails.file;
+                if (req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.udhyamDetails.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["udhyamDetailsSubmitted"] = true;
+                }
             }
-            if (req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.GST.file) {
-                data.KYCBussiness["isGSTSubmitted"] = true;
+            if (req.body.companyDetails.GST) {
+                data.companyDetails.GST.GSTNumber = req.body.companyDetails.GST.GSTNumber ? req.body.companyDetails.GST.GSTNumber : data.companyDetails.GST.GSTNumber;
+                data.companyDetails.GST.file = req.body.companyDetails.GST.file ? req.body.companyDetails.GST.file : data.companyDetails.GST.file;
+                if (req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.GST.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isGSTSubmitted"] = true;
+                }
             }
-            if (req.body.companyDetails.bankDetails.bankStatement && req.body.companyDetails.bankDetails.bankStatement.file) {
-                data.KYCBussiness["isStatementSubmitted"] = true;
+            if (req.body.companyDetails.bankDetails.bankStatement) {
+                data.companyDetails.bankDetails.bankStatement.name = req.body.companyDetails.bankDetails.bankStatement.name ? req.body.companyDetails.bankDetails.bankStatement.name : data.companyDetails.bankDetails.bankStatement.name;
+                data.companyDetails.bankDetails.bankStatement.file = req.body.companyDetails.bankDetails.bankStatement.file ? req.body.companyDetails.bankDetails.bankStatement.file : data.companyDetails.bankDetails.bankStatement.file;
+                if (req.body.companyDetails.bankDetails.bankStatement.name && req.body.companyDetails.bankDetails.bankStatement.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isStatementSubmitted"] = true;
+                }
             }
-            if (req.body.companyDetails.profitLossStatement && req.body.companyDetails.profitLossStatement.file) {
-                data.KYCBussiness["isProfitLossSubmitted"] = true;
+            if (req.body.companyDetails.profitLossStatement) {
+                data.companyDetails.profitLossStatement.name = req.body.companyDetails.profitLossStatement.name ? req.body.companyDetails.profitLossStatement.name : data.companyDetails.profitLossStatement.name;
+                data.companyDetails.profitLossStatement.file = req.body.companyDetails.profitLossStatement.file ? req.body.companyDetails.profitLossStatement.file : data.companyDetails.profitLossStatement.file;
+                if (req.body.companyDetails.profitLossStatement.name && req.body.companyDetails.profitLossStatement.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isProfitLossSubmitted"] = true;
+                }
             }
-            if (req.body.companyDetails.incomeTaxReturn && req.body.companyDetails.incomeTaxReturn.file) {
-                data.KYCBussiness["isIncomeTaxSubmitted"] = true;
+            if (req.body.companyDetails.incomeTaxReturn) {
+                data.companyDetails.incomeTaxReturn.name = req.body.companyDetails.incomeTaxReturn.name ? req.body.companyDetails.incomeTaxReturn.name : data.companyDetails.incomeTaxReturn.name;
+                data.companyDetails.incomeTaxReturn.file = req.body.companyDetails.incomeTaxReturn.file ? req.body.companyDetails.incomeTaxReturn.file : data.companyDetails.incomeTaxReturn.file;
+                if (req.body.companyDetails.incomeTaxReturn.name && req.body.companyDetails.incomeTaxReturn.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isIncomeTaxSubmitted"] = true;
+                }
             }
-            if (req.body.companyDetails.currentOutstandingLoan && req.body.companyDetails.currentOutstandingLoan.file) {
-                data.KYCBussiness["isCurrentOutStandingLoan"] = true;
+            if (req.body.companyDetails.currentOutstandingLoan) {
+                data.companyDetails.currentOutstandingLoan.name = req.body.companyDetails.currentOutstandingLoan.name ? req.body.companyDetails.currentOutstandingLoan.name : data.companyDetails.currentOutstandingLoan.name;
+                data.companyDetails.currentOutstandingLoan.file = req.body.companyDetails.currentOutstandingLoan.file ? req.body.companyDetails.currentOutstandingLoan.file : data.companyDetails.currentOutstandingLoan.file;
+                if (req.body.companyDetails.currentOutstandingLoan.name && req.body.companyDetails.currentOutstandingLoan.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isCurrentOutStandingLoan"] = true;
+                }
             }
             if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {
                 data['isBussinesKYCDone'] = true;
@@ -115,35 +156,35 @@ let personalKYC = async (req, res) => {
         let isTrue = regex.test(req.body.userId);
         let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isPersonalKYCDone: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isPersonalKYCDone: false }).lean();
         if (isUserExist) {
-        let data = isUserExist;
-        data["KYCPersonal"] = {};
-        if(req.body.PAN){
-            data.PAN.panNumber = req.body.PAN.panNumber?req.body.PAN.panNumber:data.PAN.panNumber;
-            data.PAN.file = req.body.PAN.file?req.body.PAN.file:data.PAN.file;
-        if (req.body.PAN.panNumber  && req.body.PAN.file) {
-            data.isKYCPartial=true;
-            data.KYCPersonal["isPANSubmitted"] = true;
-        }
-    }
-    if(req.body.aadhar){
-        data.aadhar.panNumber = req.body.aadhar.aadharNumber?req.body.aadhar.aadharNumber:data.aadhar.aadharNumber;
-            data.aadhar.file = req.body.aadhar.file?req.body.aadhar.file:data.aadhar.file;
-        if (req.body.aadhar.aadharNumber && req.body.aadhar.file) {
-            data.isKYCPartial=true;
-            data.KYCPersonal["isAadharSubmitted"] = true;
-        }
-    }
-        if (data.KYCPersonal["isPANSubmitted"] && data.KYCPersonal["isAadharSubmitted"]) {
-            data["isPersonalKYCDone"] = true;
-        }
-        isUserExist = isTrue ? await userModel.findOneAndUpdate({ email: req.body.userId }, data, { new: true, }).lean() : await userModel.findOneAndUpdate({ mobile: req.body.userId }, data, { new: true }).lean();
-        let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, isUserExist)
-        res.status(200).send(apiResponse)
-    }else {
-        apiResponse = response.generate(constants.ERROR, messages.USER.ALREADYKYCDONE, constants.HTTP_UNAUTHORIZED, null)
-        res.status(400).send(apiResponse)
+            let data = isUserExist;
+            data["KYCPersonal"] = {};
+            if (req.body.PAN) {
+                data.PAN.panNumber = req.body.PAN.panNumber ? req.body.PAN.panNumber : data.PAN.panNumber;
+                data.PAN.file = req.body.PAN.file ? req.body.PAN.file : data.PAN.file;
+                if (req.body.PAN.panNumber && req.body.PAN.file) {
+                    data.isKYCPartial = true;
+                    data.KYCPersonal["isPANSubmitted"] = true;
+                }
+            }
+            if (req.body.aadhar) {
+                data.aadhar.panNumber = req.body.aadhar.aadharNumber ? req.body.aadhar.aadharNumber : data.aadhar.aadharNumber;
+                data.aadhar.file = req.body.aadhar.file ? req.body.aadhar.file : data.aadhar.file;
+                if (req.body.aadhar.aadharNumber && req.body.aadhar.file) {
+                    data.isKYCPartial = true;
+                    data.KYCPersonal["isAadharSubmitted"] = true;
+                }
+            }
+            if (data.KYCPersonal["isPANSubmitted"] && data.KYCPersonal["isAadharSubmitted"]) {
+                data["isPersonalKYCDone"] = true;
+            }
+            isUserExist = isTrue ? await userModel.findOneAndUpdate({ email: req.body.userId }, data, { new: true, }).lean() : await userModel.findOneAndUpdate({ mobile: req.body.userId }, data, { new: true }).lean();
+            let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, isUserExist)
+            res.status(200).send(apiResponse)
+        } else {
+            apiResponse = response.generate(constants.ERROR, messages.USER.ALREADYKYCDONE, constants.HTTP_UNAUTHORIZED, null)
+            res.status(400).send(apiResponse)
 
-    }
+        }
     } catch (err) {
         console.log(err);
         let apiResponse = response.generate(constants.ERROR, messages.USER.FAILURE, constants.HTTP_SERVER_ERROR, err)
@@ -158,66 +199,69 @@ let businessKYC = async (req, res) => {
         let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isBussinesKYCDone: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isBussinesKYCDone: false }).lean();
         if (isUserExist) {
             let data = isUserExist;
-        data["KYCBussiness"] = {};
-        if(req.body.companyDetails.PAN){
-            data.companyDetails.PAN.panNumber = req.body.companyDetails.PAN.panNumber?req.body.companyDetails.PAN.panNumber:data.companyDetails.PAN.panNumber;
-            data.companyDetails.PAN.file = req.body.companyDetails.PAN.file?req.body.companyDetails.PAN.file:data.companyDetails.PAN.file;
-        if (req.body.companyDetails.PAN.panNumber && req.body.companyDetails.PAN.file) {
-            data.isKYCPartial=true;
-            data.KYCBussiness["isPANSubmitted"] = true;
-        }
-    }
-    if(req.body.companyDetails.udhyamDetails){
-        data.companyDetails.udhyamDetails.udhyamNumber = req.body.companyDetails.udhyamDetails.udhyamNumber?req.body.companyDetails.udhyamDetails.udhyamNumber:data.companyDetails.udhyamDetails.udhyamNumber;
-        data.companyDetails.udhyamDetails.file = req.body.companyDetails.udhyamDetails.file?req.body.companyDetails.udhyamDetails.file:data.companyDetails.udhyamDetails.file;
-    if (req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.udhyamDetails.file) {
-        data.isKYCPartial=true;
-            data.KYCBussiness["udhyamDetailsSubmitted"] = true;
-        }
-    }
-    if(req.body.companyDetails.GST){
-        data.companyDetails.GST.GSTNumber = req.body.companyDetails.GST.GSTNumber?req.body.companyDetails.GST.GSTNumber:data.companyDetails.GST.GSTNumber;
-        data.companyDetails.GST.file = req.body.companyDetails.GST.file?req.body.companyDetails.GST.file:data.companyDetails.GST.file;
-        if (req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.GST.file) {
-            data.isKYCPartial=true;
-            data.KYCBussiness["isGSTSubmitted"] = true;
-        }
-    }
-    if(req.body.companyDetails.bankDetails){
-        data.companyDetails.bankDetails.bankStatement.name = req.body.companyDetails.bankDetails.bankStatement.name?req.body.companyDetails.bankDetails.bankStatement.name:data.companyDetails.bankDetails.bankStatement.name;
-        data.companyDetails.bankDetails.bankStatement.file = req.body.companyDetails.bankDetails.bankStatement.file?req.body.companyDetails.bankDetails.bankStatement.file:data.companyDetails.bankDetails.bankStatement.file;
-        if (req.body.companyDetails.bankDetails.bankStatement.name && req.body.companyDetails.bankDetails.bankStatement.file) {
-            data.isKYCPartial=true;
-            data.KYCBussiness["isStatementSubmitted"] = true;
-        }
-    }
-    if(req.body.companyDetails.profitLossStatement){
-        data.companyDetails.profitLossStatement.name = req.body.companyDetails.profitLossStatement.name?req.body.companyDetails.profitLossStatement.name:data.companyDetails.profitLossStatement.name;
-        data.companyDetails.profitLossStatement.file = req.body.companyDetails.profitLossStatement.file?req.body.companyDetails.profitLossStatement.file:data.companyDetails.profitLossStatement.file;
-        if (req.body.companyDetails.profitLossStatement.name && req.body.companyDetails.profitLossStatement.file) {
-            data.isKYCPartial=true;
-            data.KYCBussiness["isProfitLossSubmitted"] = true;
-        }
-    }
-    if(req.body.companyDetails.incomeTaxReturn){
-        data.companyDetails.incomeTaxReturn.name = req.body.companyDetails.incomeTaxReturn.name?req.body.companyDetails.incomeTaxReturn.name:data.companyDetails.incomeTaxReturn.name;
-        data.companyDetails.incomeTaxReturn.file = req.body.companyDetails.incomeTaxReturn.file?req.body.companyDetails.incomeTaxReturn.file:data.companyDetails.incomeTaxReturn.file;
-        if (req.body.companyDetails.incomeTaxReturn.name && req.body.companyDetails.incomeTaxReturn.file) {
-            data.isKYCPartial=true;
-            data.KYCBussiness["isIncomeTaxSubmitted"] = true;
-        }
-    }
-    if(req.body.companyDetails.currentOutstandingLoan){
-        data.companyDetails.currentOutstandingLoan.name = req.body.companyDetails.currentOutstandingLoan.name?req.body.companyDetails.currentOutstandingLoan.name:data.companyDetails.currentOutstandingLoan.name;
-        data.companyDetails.currentOutstandingLoan.file = req.body.companyDetails.currentOutstandingLoan.file?req.body.companyDetails.currentOutstandingLoan.file:data.companyDetails.currentOutstandingLoan.file;
-        if (req.body.companyDetails.currentOutstandingLoan.name && req.body.companyDetails.currentOutstandingLoan.file) {
-            data.isKYCPartial=true;
-            data.KYCBussiness["isCurrentOutStandingLoan"] = true;
-        }
-    }
-        if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {
-            data['isBussinesKYCDone'] = true;
-        }
+            data["KYCBussiness"] = {};
+            if (req.body.companyDetails.PAN) {
+                data.companyDetails.PAN.name = req.body.companyDetails.PAN.name ? req.body.companyDetails.PAN.name : data.companyDetails.PAN.name;
+                data.companyDetails.PAN.panNumber = req.body.companyDetails.PAN.panNumber ? req.body.companyDetails.PAN.panNumber : data.companyDetails.PAN.panNumber;
+                data.companyDetails.PAN.file = req.body.companyDetails.PAN.file ? req.body.companyDetails.PAN.file : data.companyDetails.PAN.file;
+                if (req.body.companyDetails.PAN.name && req.body.companyDetails.PAN.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isPANSubmitted"] = true;
+                }
+            }
+            if (req.body.companyDetails.udhyamDetails) {
+                data.companyDetails.udhyamDetails.name = req.body.companyDetails.udhyamDetails.name ? req.body.companyDetails.udhyamDetails.name : data.companyDetails.udhyamDetails.name;
+                data.companyDetails.udhyamDetails.udhyamNumber = req.body.companyDetails.udhyamDetails.udhyamNumber ? req.body.companyDetails.udhyamDetails.udhyamNumber : data.companyDetails.udhyamDetails.udhyamNumber;
+                data.companyDetails.udhyamDetails.file = req.body.companyDetails.udhyamDetails.file ? req.body.companyDetails.udhyamDetails.file : data.companyDetails.udhyamDetails.file;
+                if (req.body.companyDetails.udhyamDetails.name && req.body.companyDetails.udhyamDetails.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["udhyamDetailsSubmitted"] = true;
+                }
+            }
+            if (req.body.companyDetails.GST) {
+                data.companyDetails.GST.name = req.body.companyDetails.GST.name ? req.body.companyDetails.GST.name : data.companyDetails.GST.name;
+                data.companyDetails.GST.GSTNumber = req.body.companyDetails.GST.GSTNumber ? req.body.companyDetails.GST.GSTNumber : data.companyDetails.GST.GSTNumber;
+                data.companyDetails.GST.file = req.body.companyDetails.GST.file ? req.body.companyDetails.GST.file : data.companyDetails.GST.file;
+                if (req.body.companyDetails.GST.name && req.body.companyDetails.GST.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isGSTSubmitted"] = true;
+                }
+            }
+            if (req.body.companyDetails.bankDetails) {
+                data.companyDetails.bankDetails.bankStatement.name = req.body.companyDetails.bankDetails.bankStatement.name ? req.body.companyDetails.bankDetails.bankStatement.name : data.companyDetails.bankDetails.bankStatement.name;
+                data.companyDetails.bankDetails.bankStatement.file = req.body.companyDetails.bankDetails.bankStatement.file ? req.body.companyDetails.bankDetails.bankStatement.file : data.companyDetails.bankDetails.bankStatement.file;
+                if (req.body.companyDetails.bankDetails.bankStatement.name && req.body.companyDetails.bankDetails.bankStatement.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isStatementSubmitted"] = true;
+                }
+            }
+            if (req.body.companyDetails.profitLossStatement) {
+                data.companyDetails.profitLossStatement.name = req.body.companyDetails.profitLossStatement.name ? req.body.companyDetails.profitLossStatement.name : data.companyDetails.profitLossStatement.name;
+                data.companyDetails.profitLossStatement.file = req.body.companyDetails.profitLossStatement.file ? req.body.companyDetails.profitLossStatement.file : data.companyDetails.profitLossStatement.file;
+                if (req.body.companyDetails.profitLossStatement.name && req.body.companyDetails.profitLossStatement.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isProfitLossSubmitted"] = true;
+                }
+            }
+            if (req.body.companyDetails.incomeTaxReturn) {
+                data.companyDetails.incomeTaxReturn.name = req.body.companyDetails.incomeTaxReturn.name ? req.body.companyDetails.incomeTaxReturn.name : data.companyDetails.incomeTaxReturn.name;
+                data.companyDetails.incomeTaxReturn.file = req.body.companyDetails.incomeTaxReturn.file ? req.body.companyDetails.incomeTaxReturn.file : data.companyDetails.incomeTaxReturn.file;
+                if (req.body.companyDetails.incomeTaxReturn.name && req.body.companyDetails.incomeTaxReturn.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isIncomeTaxSubmitted"] = true;
+                }
+            }
+            if (req.body.companyDetails.currentOutstandingLoan) {
+                data.companyDetails.currentOutstandingLoan.name = req.body.companyDetails.currentOutstandingLoan.name ? req.body.companyDetails.currentOutstandingLoan.name : data.companyDetails.currentOutstandingLoan.name;
+                data.companyDetails.currentOutstandingLoan.file = req.body.companyDetails.currentOutstandingLoan.file ? req.body.companyDetails.currentOutstandingLoan.file : data.companyDetails.currentOutstandingLoan.file;
+                if (req.body.companyDetails.currentOutstandingLoan.name && req.body.companyDetails.currentOutstandingLoan.file) {
+                    data.isKYCPartial = true;
+                    data.KYCBussiness["isCurrentOutStandingLoan"] = true;
+                }
+            }
+            if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {
+                data['isBussinesKYCDone'] = true;
+            }
             isUserExist = isTrue ? await userModel.findOneAndUpdate({ email: req.body.userId }, data, { new: true, }).lean() : await userModel.findOneAndUpdate({ mobile: req.body.userId }, data, { new: true }).lean();
             let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, isUserExist)
             res.status(200).send(apiResponse)
@@ -520,8 +564,8 @@ let accountActivation = async (req, res, next) => {
             return
         }
         else {
-            userData.isKYCVerificationInProgress = 'PROGRESS'; 
-            userData =await userData.save()
+            userData.isKYCVerificationInProgress = 'PROGRESS';
+            userData = await userData.save()
             apiResponse = response.generate(constants.SUCCESS, "success", constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);
             return

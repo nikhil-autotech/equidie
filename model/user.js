@@ -244,6 +244,10 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isKYCPartial: {
+        type: Boolean,
+        default: false
+    },
     KYCPersonal: {
         isPANSubmitted: {
             type: Boolean,

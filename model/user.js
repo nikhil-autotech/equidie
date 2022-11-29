@@ -68,48 +68,64 @@ const userSchema = mongoose.Schema({
             default: ''
         },
         PAN: {
-            name: {
-                type: String,
-                default: ''
+            type: {
+                _id: false,
+                name: {
+                    type: String,
+                    default: ''
+                },
+                panNumber: {
+                    type: String,
+                    default: ''
+                },
+                file: {
+                    type: String,
+                    default: ''
+                }
             },
-            panNumber: {
-                type: String,
-                default: ''
-            },
-            file: {
-                type: String,
-                default: ''
-            }
+            default: {}
         },
         udhyamDetails: {
-            name: {
-                type: String,
-                default: ''
+            type: {
+                _id: false,
+                name: {
+                    type: String,
+                    default: ''
+                },
+                file: {
+                    type: String,
+                    default: ''
+                }
             },
-            file: {
-                type: String,
-                default: ''
-            }
+            default: {}
         },
         GST: {
-            name: {
-                type: String,
-                default: ''
+            type: {
+                _id: false,
+                name: {
+                    type: String,
+                    default: ''
+                },
+                file: {
+                    type: String,
+                    default: ''
+                }
             },
-            file: {
-                type: String,
-                default: ''
-            }
+            default: {}
         },
         currentOutstandingLoan: {
-            name: {
-                type: String,
-                default: ''
+            type: {
+                _id: false,
+                name: {
+                    type: String,
+                    default: ''
+                },
+                file: {
+                    type: String,
+                    default: ''
+                }
             },
-            file: {
-                type: String,
-                default: ''
-            }
+            default: {}
         },
         bankDetails: {
             bank: {
@@ -130,7 +146,7 @@ const userSchema = mongoose.Schema({
             },
             bankStatement: {
                 type: {
-                    _id:false,
+                    _id: false,
                     name: {
                         type: String,
                         default: ''
@@ -140,57 +156,73 @@ const userSchema = mongoose.Schema({
                         default: ''
                     }
                 },
-                default:{}
+                default: {}
             }
         },
         profitLossStatement: {
-            name: {
-                type: String,
-                default: ''
+            type: {
+                _id: false,
+                name: {
+                    type: String,
+                    default: ''
+                },
+                file: {
+                    type: String,
+                    default: ''
+                }
             },
-            file: {
-                type: String,
-                default: ''
-            }
+            default: {}
         },
         incomeTaxReturn: {
-            name: {
-                type: String,
-                default: ''
+            type: {
+                _id: false,
+                name: {
+                    type: String,
+                    default: ''
+                },
+                file: {
+                    type: String,
+                    default: ''
+                }
             },
-            file: {
-                type: String,
-                default: ''
-            }
+            default: {}
         },
     },
     PAN: {
-        name: {
-            type: String,
-            default: ''
+        type: {
+            _id: false,
+            name: {
+                type: String,
+                default: ''
+            },
+            panNumber: {
+                type: String,
+                default: ''
+            },
+            file: {
+                type: String,
+                default: ''
+            }
         },
-        panNumber: {
-            type: String,
-            default: ''
-        },
-        file: {
-            type: String,
-            default: ''
-        }
+        default: {}
     },
     aadhar: {
-        name: {
-            type: String,
-            default: ''
+        type: {
+            _id: false,
+            name: {
+                type: String,
+                default: ''
+            },
+            aadharNumber: {
+                type: String,
+                default: ''
+            },
+            file: {
+                type: String,
+                default: ''
+            }
         },
-        aadharNumber: {
-            type: String,
-            default: ''
-        },
-        file: {
-            type: String,
-            default: ''
-        }
+        default: {}
     },
     isDoneKYC: {
         type: Boolean,

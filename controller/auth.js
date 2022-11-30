@@ -162,7 +162,7 @@ let personalKYC = async (req, res) => {
                 data.PAN.name = req.body.PAN.name ? req.body.PAN.name : '';
                 data.PAN.panNumber = req.body.PAN.panNumber ? req.body.PAN.panNumber : '';
                 data.PAN.file = req.body.PAN.file ? req.body.PAN.file : '';
-                if (req.body.PAN.panNumber && req.body.PAN.file) {
+                if (req.body.PAN.name && req.body.PAN.file) {
                     data.isKYCPartial = true;
                     data.KYCPersonal["isPANSubmitted"] = true;
                 }
@@ -171,7 +171,7 @@ let personalKYC = async (req, res) => {
                 data.aadhar.name = req.body.aadhar.name ? req.body.aadhar.name : '';
                 data.aadhar.panNumber = req.body.aadhar.aadharNumber ? req.body.aadhar.aadharNumber : '';
                 data.aadhar.file = req.body.aadhar.file ? req.body.aadhar.file : '';
-                if (req.body.aadhar.aadharNumber && req.body.aadhar.file) {
+                if (req.body.aadhar.name && req.body.aadhar.file) {
                     data.isKYCPartial = true;
                     data.KYCPersonal["isAadharSubmitted"] = true;
                 }

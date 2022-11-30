@@ -537,7 +537,7 @@ let getById = async (req, res, next) => {
     } catch (err) {
         res.status(400).json({
             status: 'fails',
-            message: err,
+            message: err.message,
         });
     }
 };
@@ -547,7 +547,7 @@ let accountActivation = async (req, res, next) => {
         const  id  = req.body.userId;
         let apiResponse;
         let isTrue = regex.test(id);
-        let userData = isTrue ? await userModel.findOne({ email: id }).select('-__v -_id') : await userModel.findOne({ mobile: id }).select('-__v -_id');
+        let userData = isTrue ? await userModel.findOne({ email: id }) : await userModel.findOne({ mobile: id });
         if (!userData) {
             apiResponse = response.generate(constants.ERROR, messages.USER.INVALIDUSER, constants.HTTP_NOT_FOUND, null)
             res.status(400).send(apiResponse);
@@ -563,7 +563,7 @@ let accountActivation = async (req, res, next) => {
     } catch (err) {
         res.status(400).json({
             status: 'fails',
-            message: err,
+            message: err.message,
         });
     }
 };

@@ -12,11 +12,10 @@ const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 
+const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
 
 let registration = async (req, res) => {
     try {
-        // const validRequest =  await authschema.validUser.validateAsync(req.body)
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         const isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId }).lean() : await userModel.findOne({ mobile: req.body.userId }).lean();
         if (!isUserExist) {
@@ -59,7 +58,6 @@ let registration = async (req, res) => {
 
 let companyDetails = async (req, res) => {
     try {
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isCompanyKYCPartial: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isCompanyKYCPartial: false }).lean();
         if (isUserExist) {
@@ -152,7 +150,6 @@ let companyDetails = async (req, res) => {
 
 let personalKYC = async (req, res) => {
     try {
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isPersonalKYCDone: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isPersonalKYCDone: false }).lean();
         if (isUserExist) {
@@ -196,7 +193,6 @@ let personalKYC = async (req, res) => {
 
 let businessKYC = async (req, res) => {
     try {
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isBussinesKYCDone: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isBussinesKYCDone: false }).lean();
         if (isUserExist) {
@@ -283,7 +279,6 @@ let businessKYC = async (req, res) => {
 let login = async (req, res) => {
     try {
         const { password } = req.body;
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         const getUser = isTrue ? await userModel.findOne({ email: req.body.userId })
             .select(
@@ -346,7 +341,6 @@ const sendMessage = async (email, token) => {
 let forgotPassword = async (req, res) => {
     try {
         let userId = req.body.userId
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         if (isTrue) {
             let obtainUser = isTrue ? await userModel.findOne({ email: userId }) : await userModel.findOne({ mobile: userId });
@@ -375,7 +369,6 @@ let forgotPassword = async (req, res) => {
 
 let resetPasswordKnownPass = async (req, res) => {
     try {
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         let obtainUser = isTrue ? await userModel.findOne({ email: req.body.userId }) : await userModel.findOne({ mobile: req.body.userId });
         if (obtainUser) {
@@ -413,7 +406,6 @@ let resetPassword = async (req, res, next) => {
         let userData = jwt.verify(req.token, process.env.JWT_SECRET);
         console.log(userData)
         let obtainUser;
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(userData.userId);
         obtainUser = isTrue ? await userModel.findOne({ email: userData.userId }) : await userModel.findOne({ mobile: userData.userId });
         if (!obtainUser) {
@@ -431,7 +423,6 @@ let resetPassword = async (req, res, next) => {
 
 let sendOTP = async (req, res, next) => {
     try {
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         let apiResponse;
         let obtainUser = isTrue ? await userModel.findOne({ email: req.body.userId }).select(
@@ -474,7 +465,6 @@ let sendOTP = async (req, res, next) => {
 let verifyOTP = async (req, res, next) => {
     try {
         let apiResponse;
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         if (req.body.changed) {
             isTrue = regex.test(req.body.oldUserId);
@@ -531,7 +521,6 @@ let getById = async (req, res, next) => {
     try {
         const { id } = req.params;
         let apiResponse;
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(id);
         const userData = isTrue ? await userModel.findOne({ email: id }).select('-__v -_id').lean() : await userModel.findOne({ mobile: id }).select('-__v -_id').lean();
         if (!userData) {
@@ -555,9 +544,8 @@ let getById = async (req, res, next) => {
 
 let accountActivation = async (req, res, next) => {
     try {
-        const { id } = req.params;
+        const  id  = req.body.userId;
         let apiResponse;
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(id);
         let userData = isTrue ? await userModel.findOne({ email: id }).select('-__v -_id') : await userModel.findOne({ mobile: id }).select('-__v -_id');
         if (!userData) {
@@ -584,7 +572,6 @@ let checkEmail = async (req, res, next) => {
     try {
 
         let apiResponse;
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(req.body.userId);
         const userData = isTrue ? await userModel.findOne({ email: req.body.userId }).select('-__v -_id').lean() : await userModel.findOne({ mobile: req.body.userId }).select('-__v -_id').lean();
         if (!userData) {
@@ -609,7 +596,6 @@ let UserUpdateById = async (req, res, next) => {
     try {
         const { id } = req.params;
         let apiResponse;
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(id);
         if (req.body.email) {
             req.body.isEmail = true;
@@ -649,7 +635,6 @@ let DeleteUser = async (req, res, next) => {
     try {
         const { id } = req.params;
         let apiResponse;
-        const regex = new RegExp(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/);
         let isTrue = regex.test(id);
         let userData = isTrue ? await userModel.findOneAndDelete({ email: id }, { new: true }) : await userModel.findOneAndDelete({ mobile: id }, { new: true });
         if (!userData) {

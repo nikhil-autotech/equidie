@@ -151,7 +151,7 @@ let companyDetails = async (req, res) => {
 let personalKYC = async (req, res) => {
     try {
         let isTrue = regex.test(req.body.userId);
-        let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isPersonalKYCDone: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isPersonalKYCDone: false }).lean();
+        let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId }).lean() : await userModel.findOne({ mobile: req.body.userId }).lean();
         if (isUserExist) {
             let data = isUserExist;
             data["KYCPersonal"] = {};
@@ -194,7 +194,7 @@ let personalKYC = async (req, res) => {
 let businessKYC = async (req, res) => {
     try {
         let isTrue = regex.test(req.body.userId);
-        let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isBussinesKYCDone: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isBussinesKYCDone: false }).lean();
+        let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId }).lean() : await userModel.findOne({ mobile: req.body.userId }).lean();
         if (isUserExist) {
             let data = isUserExist;
             data["KYCBussiness"] = {};

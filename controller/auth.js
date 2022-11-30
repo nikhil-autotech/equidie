@@ -63,21 +63,11 @@ let companyDetails = async (req, res) => {
         if (isUserExist) {
             let data = isUserExist;
             data["KYCBussiness"] = {};
-            if (req.body.companyDetails.name && req.body.companyDetails.product && req.body.companyDetails.yearOfIncorporation && req.body.companyDetails.industryType && req.body.companyDetails.licenseNumber && req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.PAN.panNumber && req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.bankDetails.bankName && req.body.companyDetails.address) {
-                data.companyDetails.bankDetails.bankName = req.body.companyDetails.bankDetails.bankName ? req.body.companyDetails.bankDetails.bankName :req.body.companyDetails.bankDetails?.bankName==''?'': data.companyDetails.bankDetails.bankName;
-                data.companyDetails.name = req.body.companyDetails.name ? req.body.companyDetails.name :req.body.companyDetails?.name==''?'': data.companyDetails.name;
-                data.companyDetails.address = req.body.companyDetails.address ? req.body.companyDetails.address :req.body.companyDetails?.address==''?'':data.companyDetails.address;
-                data.companyDetails.product = req.body.companyDetails.product ? req.body.companyDetails.product : req.body.companyDetails?.product==''?'':data.companyDetails.product;
-                data.companyDetails.yearOfIncorporation = req.body.companyDetails.yearOfIncorporation ? req.body.companyDetails.yearOfIncorporation : req.body.companyDetails?.address==''?'':data.companyDetails.address;
-                data.companyDetails.industryType = req.body.companyDetails.industryType ? req.body.companyDetails.industryType : req.body.companyDetails?.industryType==''?'':data.companyDetails.industryType;
-                data.companyDetails.licenseNumber = req.body.companyDetails.licenseNumber ? req.body.companyDetails.licenseNumber : req.body.companyDetails?.licenseNumber==''?'':data.companyDetails.licenseNumber;
-                data["isAllCompanyInfoAvailable"] = true;
-            }
             if (req.body.companyDetails.PAN) {
                 data.companyDetails.PAN.name = req.body.companyDetails.PAN.name ? req.body.companyDetails.PAN.name : req.body.companyDetails.PAN?.name==''?'':data.companyDetails.PAN.name;
                 data.companyDetails.PAN.panNumber = req.body.companyDetails.PAN.panNumber ? req.body.companyDetails.PAN.panNumber : req.body.companyDetails.PAN?.panNumber==''?'':data.companyDetails.PAN.panNumber;
                 data.companyDetails.PAN.file = req.body.companyDetails.PAN.file ? req.body.companyDetails.PAN.file : req.body.companyDetails.PAN?.file==''?'':data.companyDetails.PAN.file;
-                if (req.body.companyDetails.PAN.name && req.body.companyDetails.PAN.file) {
+                if (req.body.companyDetails.PAN.panNumber && req.body.companyDetails.PAN.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isPANSubmitted"] = true;
                 }
@@ -86,10 +76,10 @@ let companyDetails = async (req, res) => {
                 data.companyDetails.udhyamDetails.name = req.body.companyDetails.udhyamDetails.name ? req.body.companyDetails.udhyamDetails.name : req.body.companyDetails.udhyamDetails?.name==''?'':data.companyDetails.udhyamDetails.name;
                 data.companyDetails.udhyamDetails.udhyamNumber = req.body.companyDetails.udhyamDetails.udhyamNumber ? req.body.companyDetails.udhyamDetails.udhyamNumber : req.body.companyDetails.udhyamDetails?.udhyamNumber==''?'':data.companyDetails.udhyamDetails.udhyamNumber;
                 data.companyDetails.udhyamDetails.file = req.body.companyDetails.udhyamDetails.file ? req.body.companyDetails.udhyamDetails.file : req.body.companyDetails.udhyamDetails?.file==''?'':data.companyDetails.udhyamDetails.file;
-                if (req.body.companyDetails.udhyamDetails.name && req.body.companyDetails.udhyamDetails.file) {
+                if (req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.udhyamDetails.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["udhyamDetailsSubmitted"] = true;
-                }
+                } 
             }
             if (req.body.companyDetails.GST) {
                 data.companyDetails.GST.name = req.body.companyDetails.GST.name ? req.body.companyDetails.GST.name : req.body.companyDetails.GST?.name==''?'':data.companyDetails.GST.name;
@@ -131,6 +121,19 @@ let companyDetails = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isCurrentOutStandingLoan"] = true;
                 }
+            }
+            if (req.body.companyDetails.name && req.body.companyDetails.product && req.body.companyDetails.yearOfIncorporation && req.body.companyDetails.industryType && req.body.companyDetails.licenseNumber && req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.PAN.panNumber && req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.bankDetails.bankName && req.body.companyDetails.address) {
+                data.companyDetails.bankDetails.bankName = req.body.companyDetails.bankDetails.bankName ? req.body.companyDetails.bankDetails.bankName :req.body.companyDetails.bankDetails?.bankName==''?'': data.companyDetails.bankDetails.bankName;
+                data.companyDetails.name = req.body.companyDetails.name ? req.body.companyDetails.name :req.body.companyDetails?.name==''?'': data.companyDetails.name;
+                data.companyDetails.address = req.body.companyDetails.address ? req.body.companyDetails.address :req.body.companyDetails?.address==''?'':data.companyDetails.address;
+                data.companyDetails.product = req.body.companyDetails.product ? req.body.companyDetails.product : req.body.companyDetails?.product==''?'':data.companyDetails.product;
+                data.companyDetails.yearOfIncorporation = req.body.companyDetails.yearOfIncorporation ? req.body.companyDetails.yearOfIncorporation : req.body.companyDetails?.address==''?'':data.companyDetails.address;
+                data.companyDetails.industryType = req.body.companyDetails.industryType ? req.body.companyDetails.industryType : req.body.companyDetails?.industryType==''?'':data.companyDetails.industryType;
+                data.companyDetails.licenseNumber = req.body.companyDetails.licenseNumber ? req.body.companyDetails.licenseNumber : req.body.companyDetails?.licenseNumber==''?'':data.companyDetails.licenseNumber;
+                data["isAllCompanyInfoAvailable"] = true;
+            }
+            else{
+                data["isAllCompanyInfoAvailable"] = false; 
             }
             if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {
                 data['isBussinesKYCDone'] = true;

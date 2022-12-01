@@ -137,7 +137,7 @@ let companyDetails = async (req, res) => {
                 data['isBussinesKYCDone'] = true;
             }
             isUserExist = isTrue ? await userModel.findOneAndUpdate({ email: req.body.userId }, data, { new: true }).lean() : await userModel.findOneAndUpdate({ mobile: req.body.userId }, data, { new: true }).lean();
-            let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, isUserExist)
+            let apiResponse = response.generate(constants.SUCCESS, 'Your information has been updated', constants.HTTP_SUCCESS, isUserExist)
             res.status(200).send(apiResponse)
         }
         else {
@@ -181,7 +181,7 @@ let personalKYC = async (req, res) => {
                 data["isPersonalKYCDone"] = true;
             }
             isUserExist = isTrue ? await userModel.findOneAndUpdate({ email: req.body.userId }, data, { new: true, }).lean() : await userModel.findOneAndUpdate({ mobile: req.body.userId }, data, { new: true }).lean();
-            let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, isUserExist)
+            let apiResponse = response.generate(constants.SUCCESS, "Personal KYC has been updated", constants.HTTP_SUCCESS, isUserExist)
             res.status(200).send(apiResponse)
         } else {
             apiResponse = response.generate(constants.ERROR, messages.USER.ALREADYKYCDONE, constants.HTTP_UNAUTHORIZED, null)
@@ -265,7 +265,7 @@ let businessKYC = async (req, res) => {
                 data['isBussinesKYCDone'] = true;
             }
             isUserExist = isTrue ? await userModel.findOneAndUpdate({ email: req.body.userId }, data, { new: true, }).lean() : await userModel.findOneAndUpdate({ mobile: req.body.userId }, data, { new: true }).lean();
-            let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, isUserExist)
+            let apiResponse = response.generate(constants.SUCCESS, "Bussiness KYC has been updated", constants.HTTP_SUCCESS, isUserExist)
             res.status(200).send(apiResponse)
         }
         else {

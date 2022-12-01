@@ -115,21 +115,19 @@ let companyDetails = async (req, res) => {
                 }
             }
             if (req.body.companyDetails.currentOutstandingLoan) {
-                data.companyDetails.currentOutstandingLoan.name = req.body.companyDetails.currentOutstandingLoan.name ? req.body.companyDetails.currentOutstandingLoan.name : req.body.companyDetails.currentOutstandingLoan?.name==''?'':data.companyDetails.currentOutstandingLoan.name;
-                data.companyDetails.currentOutstandingLoan.file = req.body.companyDetails.currentOutstandingLoan.file ? req.body.companyDetails.currentOutstandingLoan.file : req.body.companyDetails.currentOutstandingLoan?.file==''?'':data.companyDetails.currentOutstandingLoan.file;
                 if (req.body.companyDetails.currentOutstandingLoan.name && req.body.companyDetails.currentOutstandingLoan.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isCurrentOutStandingLoan"] = true;
                 }
             }
-            if (req.body.companyDetails.name && req.body.companyDetails.product && req.body.companyDetails.yearOfIncorporation && req.body.companyDetails.industryType && req.body.companyDetails.licenseNumber && req.body.companyDetails.GST.GSTNumber && req.body.companyDetails.PAN.panNumber && req.body.companyDetails.udhyamDetails.udhyamNumber && req.body.companyDetails.bankDetails.bankName && req.body.companyDetails.address) {
-                data.companyDetails.bankDetails.bankName = req.body.companyDetails.bankDetails.bankName ? req.body.companyDetails.bankDetails.bankName :req.body.companyDetails.bankDetails?.bankName==''?'': data.companyDetails.bankDetails.bankName;
-                data.companyDetails.name = req.body.companyDetails.name ? req.body.companyDetails.name :req.body.companyDetails?.name==''?'': data.companyDetails.name;
-                data.companyDetails.address = req.body.companyDetails.address ? req.body.companyDetails.address :req.body.companyDetails?.address==''?'':data.companyDetails.address;
-                data.companyDetails.product = req.body.companyDetails.product ? req.body.companyDetails.product : req.body.companyDetails?.product==''?'':data.companyDetails.product;
-                data.companyDetails.yearOfIncorporation = req.body.companyDetails.yearOfIncorporation ? req.body.companyDetails.yearOfIncorporation : req.body.companyDetails?.address==''?'':data.companyDetails.address;
-                data.companyDetails.industryType = req.body.companyDetails.industryType ? req.body.companyDetails.industryType : req.body.companyDetails?.industryType==''?'':data.companyDetails.industryType;
-                data.companyDetails.licenseNumber = req.body.companyDetails.licenseNumber ? req.body.companyDetails.licenseNumber : req.body.companyDetails?.licenseNumber==''?'':data.companyDetails.licenseNumber;
+            data.companyDetails.bankDetails.bankName = req.body.companyDetails.bankDetails.bankName ? req.body.companyDetails.bankDetails.bankName : req.body.companyDetails.bankDetails?.bankName=='' ? '' : data.companyDetails.bankDetails.bankName;
+            data.companyDetails.name = req.body.companyDetails.name ? req.body.companyDetails.name :req.body.companyDetails?.name==''?'': data.companyDetails.name;
+            data.companyDetails.address = req.body.companyDetails.address ? req.body.companyDetails.address :req.body.companyDetails?.address==''?'':data.companyDetails.address;
+            data.companyDetails.product = req.body.companyDetails.product ? req.body.companyDetails.product : req.body.companyDetails?.product==''?'':data.companyDetails.product;
+            data.companyDetails.yearOfIncorporation = req.body.companyDetails.yearOfIncorporation ? req.body.companyDetails.yearOfIncorporation : req.body.companyDetails?.yearOfIncorporation==''?'':data.companyDetails.yearOfIncorporation;
+            data.companyDetails.industryType = req.body.companyDetails.industryType ? req.body.companyDetails.industryType : req.body.companyDetails?.industryType==''?'':data.companyDetails.industryType;
+            data.companyDetails.licenseNumber = req.body.companyDetails.licenseNumber ? req.body.companyDetails.licenseNumber : req.body.companyDetails?.licenseNumber==''?'':data.companyDetails.licenseNumber;
+            if (data.companyDetails.name && data.companyDetails.product && data.companyDetails.yearOfIncorporation && data.companyDetails.industryType && data.companyDetails.licenseNumber && data.companyDetails.GST.GSTNumber && data.companyDetails.PAN.panNumber && data.companyDetails.udhyamDetails.udhyamNumber && data.companyDetails.bankDetails.bankName && data.companyDetails.address) {
                 data["isAllCompanyInfoAvailable"] = true;
             }
             else{
@@ -165,21 +163,21 @@ let personalKYC = async (req, res) => {
                 data.PAN.name = req.body.PAN.name ? req.body.PAN.name : req.body.PAN?.name==''?'':data.PAN.name;
                 data.PAN.panNumber = req.body.PAN.panNumber ? req.body.PAN.panNumber : req.body.PAN?.panNumber==''?'':data.PAN.panNumber;
                 data.PAN.file = req.body.PAN.file ? req.body.PAN.file : req.body.PAN?.file==''?'':data.PAN.file;
-                if (req.body.PAN.name && req.body.PAN.file) {
+                if (data.PAN.name && data.PAN.file) {
                     data.isKYCPartial = true;
                     data.KYCPersonal["isPANSubmitted"] = true;
                 }
             }
             if (req.body.aadhar) {
                 data.aadhar.name = req.body.aadhar.name ? req.body.aadhar.name : req.body.aadhar?.name==''?'':data.aadhar.name;
-                data.aadhar.panNumber = req.body.aadhar.aadharNumber ? req.body.aadhar.aadharNumber : req.body.aadhar?.aadharNumber==''?'':data.aadhar.aadharNumber;
+                data.aadhar.aadharNumber = req.body.aadhar.aadharNumber ? req.body.aadhar.aadharNumber : req.body.aadhar?.aadharNumber==''?'':data.aadhar.aadharNumber;
                 data.aadhar.file = req.body.aadhar.file ? req.body.aadhar.file : req.body.aadhar?.file==''?'':data.aadhar.file;
-                if (req.body.aadhar.name && req.body.aadhar.file) {
+                if (data.aadhar.name && data.aadhar.file) {
                     data.isKYCPartial = true;
                     data.KYCPersonal["isAadharSubmitted"] = true;
                 }
             }
-            if (data.KYCPersonal["isPANSubmitted"] && data.KYCPersonal["isAadharSubmitted"]) {
+            if (data.KYCPersonal["isPANSubmitted"]==true && data.KYCPersonal["isAadharSubmitted"]==true) {
                 data["isPersonalKYCDone"] = true;
             }
             isUserExist = isTrue ? await userModel.findOneAndUpdate({ email: req.body.userId }, data, { new: true, }).lean() : await userModel.findOneAndUpdate({ mobile: req.body.userId }, data, { new: true }).lean();
@@ -208,7 +206,7 @@ let businessKYC = async (req, res) => {
                 data.companyDetails.PAN.name = req.body.companyDetails.PAN.name ? req.body.companyDetails.PAN.name : req.body.companyDetails.PAN?.name==''?'':data.companyDetails.PAN.name;
                 data.companyDetails.PAN.panNumber = req.body.companyDetails.PAN.panNumber ? req.body.companyDetails.PAN.panNumber : req.body.companyDetails.PAN?.panNumber==''?'':data.companyDetails.PAN.panNumber;
                 data.companyDetails.PAN.file = req.body.companyDetails.PAN.file ? req.body.companyDetails.PAN.file : req.body.companyDetails.PAN?.file==''?'':data.companyDetails.PAN.file;
-                if (req.body.companyDetails.PAN.name && req.body.companyDetails.PAN.file) {
+                if (data.companyDetails.PAN.name && data.companyDetails.PAN.panNumber && data.companyDetails.PAN.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isPANSubmitted"] = true;
                 }
@@ -217,7 +215,7 @@ let businessKYC = async (req, res) => {
                 data.companyDetails.udhyamDetails.name = req.body.companyDetails.udhyamDetails.name ? req.body.companyDetails.udhyamDetails.name : req.body.companyDetails.udhyamDetails?.name==''?'':data.companyDetails.udhyamDetails.name;
                 data.companyDetails.udhyamDetails.udhyamNumber = req.body.companyDetails.udhyamDetails.udhyamNumber ? req.body.companyDetails.udhyamDetails.udhyamNumber : req.body.companyDetails.udhyamDetails?.udhyamNumber==''?'':data.companyDetails.udhyamDetails.udhyamNumber;
                 data.companyDetails.udhyamDetails.file = req.body.companyDetails.udhyamDetails.file ? req.body.companyDetails.udhyamDetails.file : req.body.companyDetails.udhyamDetails?.file==''?'':data.companyDetails.udhyamDetails.file;
-                if (req.body.companyDetails.udhyamDetails.name && req.body.companyDetails.udhyamDetails.file) {
+                if (data.companyDetails.udhyamDetails.name && data.companyDetails.udhyamDetails.udhyamNumber && data.companyDetails.udhyamDetails.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["udhyamDetailsSubmitted"] = true;
                 }
@@ -226,7 +224,7 @@ let businessKYC = async (req, res) => {
                 data.companyDetails.GST.name = req.body.companyDetails.GST.name ? req.body.companyDetails.GST.name : req.body.companyDetails.GST?.name==''?'':data.companyDetails.GST.name;
                 data.companyDetails.GST.GSTNumber = req.body.companyDetails.GST.GSTNumber ? req.body.companyDetails.GST.GSTNumber : req.body.companyDetails.GST?.GSTNumber==''?'':data.companyDetails.GST.GSTNumber;
                 data.companyDetails.GST.file = req.body.companyDetails.GST.file ? req.body.companyDetails.GST.file : req.body.companyDetails.GST?.file==''?'':data.companyDetails.GST.file;
-                if (req.body.companyDetails.GST.name && req.body.companyDetails.GST.file) {
+                if (data.companyDetails.GST.name && data.companyDetails.GST.GSTNumber && data.companyDetails.GST.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isGSTSubmitted"] = true;
                 }
@@ -234,7 +232,7 @@ let businessKYC = async (req, res) => {
             if (req.body.companyDetails.bankDetails) {
                 data.companyDetails.bankDetails.bankStatement.name = req.body.companyDetails.bankDetails.bankStatement.name ? req.body.companyDetails.bankDetails.bankStatement.name : req.body.companyDetails.bankDetails.bankStatement?.name==''?'':data.companyDetails.bankDetails.bankStatement.name;
                 data.companyDetails.bankDetails.bankStatement.file = req.body.companyDetails.bankDetails.bankStatement.file ? req.body.companyDetails.bankDetails.bankStatement.file : req.body.companyDetails.bankDetails.bankStatement?.file==''?'':data.companyDetails.bankDetails.bankStatement.file;
-                if (req.body.companyDetails.bankDetails.bankStatement.name && req.body.companyDetails.bankDetails.bankStatement.file) {
+                if (data.companyDetails.bankDetails.bankStatement.name && data.companyDetails.bankDetails.bankStatement.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isStatementSubmitted"] = true;
                 }
@@ -242,7 +240,7 @@ let businessKYC = async (req, res) => {
             if (req.body.companyDetails.profitLossStatement) {
                 data.companyDetails.profitLossStatement.name = req.body.companyDetails.profitLossStatement.name ? req.body.companyDetails.profitLossStatement.name : req.body.companyDetails.profitLossStatement?.name==''?'':data.companyDetails.profitLossStatement.name;
                 data.companyDetails.profitLossStatement.file = req.body.companyDetails.profitLossStatement.file ? req.body.companyDetails.profitLossStatement.file : req.body.companyDetails.profitLossStatement?.file==''?'':data.companyDetails.profitLossStatement.file;
-                if (req.body.companyDetails.profitLossStatement.name && req.body.companyDetails.profitLossStatement.file) {
+                if (data.companyDetails.profitLossStatement.name && data.companyDetails.profitLossStatement.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isProfitLossSubmitted"] = true;
                 }
@@ -250,7 +248,7 @@ let businessKYC = async (req, res) => {
             if (req.body.companyDetails.incomeTaxReturn) {
                 data.companyDetails.incomeTaxReturn.name = req.body.companyDetails.incomeTaxReturn.name ? req.body.companyDetails.incomeTaxReturn.name : req.body.companyDetails.incomeTaxReturn?.name==''?'':data.companyDetails.incomeTaxReturn.name;
                 data.companyDetails.incomeTaxReturn.file = req.body.companyDetails.incomeTaxReturn.file ? req.body.companyDetails.incomeTaxReturn.file : req.body.companyDetails.incomeTaxReturn?.file==''?'':data.companyDetails.incomeTaxReturn.file;
-                if (req.body.companyDetails.incomeTaxReturn.name && req.body.companyDetails.incomeTaxReturn.file) {
+                if (data.companyDetails.incomeTaxReturn.name && data.companyDetails.incomeTaxReturn.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isIncomeTaxSubmitted"] = true;
                 }
@@ -258,7 +256,7 @@ let businessKYC = async (req, res) => {
             if (req.body.companyDetails.currentOutstandingLoan) {
                 data.companyDetails.currentOutstandingLoan.name = req.body.companyDetails.currentOutstandingLoan.name ? req.body.companyDetails.currentOutstandingLoan.name : req.body.companyDetails.currentOutstandingLoan?.name==''?'':data.companyDetails.currentOutstandingLoan.name;
                 data.companyDetails.currentOutstandingLoan.file = req.body.companyDetails.currentOutstandingLoan.file ? req.body.companyDetails.currentOutstandingLoan.file : req.body.companyDetails.currentOutstandingLoan?.file==''?'':data.companyDetails.currentOutstandingLoan.file;
-                if (req.body.companyDetails.currentOutstandingLoan.name && req.body.companyDetails.currentOutstandingLoan.file) {
+                if (data.companyDetails.currentOutstandingLoan.name && data.companyDetails.currentOutstandingLoan.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isCurrentOutStandingLoan"] = true;
                 }

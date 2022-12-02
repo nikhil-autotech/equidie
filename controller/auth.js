@@ -383,7 +383,7 @@ let resetPasswordKnownPass = async (req, res) => {
                 return res.status(200).send(apiResponse)
             } else {
                 let apiResponse = response.generate(constants.ERROR, messages.USER.DOESNOTMATCH, constants.HTTP_UNAUTHORIZED,)
-                res.status(400).send(apiResponse)
+                res.status(200).send(apiResponse)
                 return
             }
         }

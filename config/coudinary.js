@@ -11,7 +11,7 @@ function upload(file) {
     });
 
     return new Q.Promise((resolve, reject) => {
-        cloudinary.v2.uploader.upload(file,{resource_type: "auto"}, (err, res) => {
+        cloudinary.v2.uploader.upload(file,{resource_type: "auto",flags:"attachment"}, (err, res) => {
             if (err) {
                 console.log('cloudinary err:', err);
                 reject(err);

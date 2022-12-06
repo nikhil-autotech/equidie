@@ -21,6 +21,7 @@ let registration = async (req, res) => {
         if (!isUserExist) {
             let createUser = isTrue ? new userModel({
                 _id: new mongoose.Types.ObjectId(),
+                role: req.body.role ? req.body.role: 'User',
                 password: req.body.password,
                 orgName: req.body.orgName,
                 product: req.body.product,
@@ -33,6 +34,7 @@ let registration = async (req, res) => {
 
             }) : new userModel({
                 _id: new mongoose.Types.ObjectId(),
+                role: req.body.role ? req.body.role: 'User',
                 password: req.body.password,
                 orgName: req.body.orgName,
                 product: req.body.product,

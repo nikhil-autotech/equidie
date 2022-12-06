@@ -253,6 +253,10 @@ const userSchema = mongoose.Schema({
         default: 'INITIAL',
         enum:['PROGRESS','FAILED','DONE','INITIAL']
     },
+    profileCompletion: {
+        type: Number,
+        default: 30
+    },
     KYCPersonal: {
         isPANSubmitted: {
             type: Boolean,

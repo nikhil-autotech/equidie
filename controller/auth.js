@@ -66,6 +66,7 @@ let registration = async (req, res) => {
 
 let companyDetails = async (req, res) => {
     try {
+        let profileCompletion = 30;
         let isTrue = regex.test(req.body.userId);
         let isUserExist = isTrue ? await userModel.findOne({ email: req.body.userId, isCompanyKYCPartial: false }).lean() : await userModel.findOne({ mobile: req.body.userId, isCompanyKYCPartial: false }).lean();
         if (isUserExist) {
@@ -98,7 +99,7 @@ let companyDetails = async (req, res) => {
                     data.KYCBussiness["isGSTSubmitted"] = true;
                 }
             }
-            if (req.body.companyDetails.bankDetails.bankStatement) {
+            if (req.body.companyDetails.bankDetails && req.body.companyDetails.bankDetails.bankStatement) {
                 data.companyDetails.bankDetails.bankStatement.name = req.body.companyDetails.bankDetails.bankStatement.name ? req.body.companyDetails.bankDetails.bankStatement.name : req.body.companyDetails.bankDetails.bankStatement?.name == '' ? '' : data.companyDetails.bankDetails.bankStatement.name;
                 data.companyDetails.bankDetails.bankStatement.file = req.body.companyDetails.bankDetails.bankStatement.file ? req.body.companyDetails.bankDetails.bankStatement.file : req.body.companyDetails.bankDetails.bankStatement?.file == '' ? '' : data.companyDetails.bankDetails.bankStatement.file;
                 if (req.body.companyDetails.bankDetails.bankStatement.name && req.body.companyDetails.bankDetails.bankStatement.file) {
@@ -128,7 +129,7 @@ let companyDetails = async (req, res) => {
                     data.KYCBussiness["isCurrentOutStandingLoan"] = true;
                 }
             }
-            data.companyDetails.bankDetails.bankName = req.body.companyDetails.bankDetails.bankName ? req.body.companyDetails.bankDetails.bankName : req.body.companyDetails.bankDetails?.bankName == '' ? '' : data.companyDetails.bankDetails.bankName;
+            data.companyDetails.bankDetails.bankName = req.body.companyDetails.bankDetails?.bankName ? req.body.companyDetails.bankDetails.bankName : req.body.companyDetails.bankDetails?.bankName == '' ? '' : data.companyDetails.bankDetails.bankName;
             data.companyDetails.name = req.body.companyDetails.name ? req.body.companyDetails.name : req.body.companyDetails?.name == '' ? '' : data.companyDetails.name;
             data.companyDetails.address = req.body.companyDetails.address ? req.body.companyDetails.address : req.body.companyDetails?.address == '' ? '' : data.companyDetails.address;
             data.companyDetails.product = req.body.companyDetails.product ? req.body.companyDetails.product : req.body.companyDetails?.product == '' ? '' : data.companyDetails.product;
@@ -137,60 +138,41 @@ let companyDetails = async (req, res) => {
             data.companyDetails.licenseNumber = req.body.companyDetails.licenseNumber ? req.body.companyDetails.licenseNumber : req.body.companyDetails?.licenseNumber == '' ? '' : data.companyDetails.licenseNumber;
             if (data.companyDetails.name && data.companyDetails.product && data.companyDetails.yearOfIncorporation && data.companyDetails.industryType && data.companyDetails.licenseNumber && data.companyDetails.GST.GSTNumber && data.companyDetails.PAN.panNumber && data.companyDetails.udhyamDetails.udhyamNumber && data.companyDetails.bankDetails.bankName && data.companyDetails.address) {
                 data["isAllCompanyInfoAvailable"] = true;
-                data.profileCompletion = data.profileCompletion + 36.8;
+                data.profileCompletion = profileCompletion + 36.8;
             }
             else {
                 data["isAllCompanyInfoAvailable"] = false;
                 if (data.companyDetails.name) {
-                    data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
+                    profileCompletion = profileCompletion + 3.68;
                 }
                 if (data.companyDetails.product) {
-                    data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
+                    profileCompletion = profileCompletion + 3.68;
                 }
                 if (data.companyDetails.yearOfIncorporation) {
-                    data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
+                    profileCompletion = profileCompletion + 3.68;
                 }
                 if (data.companyDetails.industryType) {
-                    data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
+                    profileCompletion = profileCompletion + 3.68;
                 }
                 if (data.companyDetails.licenseNumber) {
-                    data.profileCompletion = data.profilaeCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profilaeCompletion - 3.68;
+                    profileCompletion = profileCompletion + 3.68;
                 }
                 if (data.companyDetails.GST.GSTNumber) {
-                    data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
+                    profileCompletion = profileCompletion + 3.68;
                 }
                 if (data.companyDetails.udhyamDetails.udhyamNumber) {
-                    data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
+                    profileCompletion = profileCompletion + 3.68;
                 }
                 if (data.companyDetails.PAN.panNumber) {
-                    data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
+                    profileCompletion = profileCompletion + 3.68;
                 }
                 if (data.companyDetails.bankDetails.bankName) {
-                    data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
+                    profileCompletion = profileCompletion + 3.68;
                 }
                 if (data.companyDetails.address) {
-                    data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
+                    profileCompletion = profileCompletion + 3.68;
                 }
+                data.profileCompletion = profileCompletion;
             }
             if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {
                 data['isBussinesKYCDone'] = true;
@@ -226,9 +208,7 @@ let personalKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCPersonal["isPANSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
-                }
+                } 
             }
             if (req.body.aadhar) {
                 data.aadhar.name = req.body.aadhar.name ? req.body.aadhar.name : req.body.aadhar?.name == '' ? '' : data.aadhar.name;
@@ -239,9 +219,7 @@ let personalKYC = async (req, res) => {
                     data.KYCPersonal["isAadharSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
                 }
-                else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
-                }
+                
             }
             if (data.KYCPersonal["isPANSubmitted"] == true && data.KYCPersonal["isAadharSubmitted"] == true) {
                 data["isPersonalKYCDone"] = true;
@@ -276,9 +254,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isPANSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
-                }
+                } 
             }
             if (req.body.companyDetails.udhyamDetails) {
                 data.companyDetails.udhyamDetails.name = req.body.companyDetails.udhyamDetails.name ? req.body.companyDetails.udhyamDetails.name : req.body.companyDetails.udhyamDetails?.name == '' ? '' : data.companyDetails.udhyamDetails.name;
@@ -288,9 +264,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["udhyamDetailsSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
-                }
+                } 
             }
             if (req.body.companyDetails.GST) {
                 data.companyDetails.GST.name = req.body.companyDetails.GST.name ? req.body.companyDetails.GST.name : req.body.companyDetails.GST?.name == '' ? '' : data.companyDetails.GST.name;
@@ -300,9 +274,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isGSTSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
-                }
+                } 
             }
             if (req.body.companyDetails.bankDetails) {
                 data.companyDetails.bankDetails.bankStatement.name = req.body.companyDetails.bankDetails.bankStatement.name ? req.body.companyDetails.bankDetails.bankStatement.name : req.body.companyDetails.bankDetails.bankStatement?.name == '' ? '' : data.companyDetails.bankDetails.bankStatement.name;
@@ -311,9 +283,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isStatementSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
-                }
+                } 
             }
             if (req.body.companyDetails.profitLossStatement) {
                 data.companyDetails.profitLossStatement.name = req.body.companyDetails.profitLossStatement.name ? req.body.companyDetails.profitLossStatement.name : req.body.companyDetails.profitLossStatement?.name == '' ? '' : data.companyDetails.profitLossStatement.name;
@@ -322,9 +292,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isProfitLossSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
-                }
+                } 
             }
             if (req.body.companyDetails.incomeTaxReturn) {
                 data.companyDetails.incomeTaxReturn.name = req.body.companyDetails.incomeTaxReturn.name ? req.body.companyDetails.incomeTaxReturn.name : req.body.companyDetails.incomeTaxReturn?.name == '' ? '' : data.companyDetails.incomeTaxReturn.name;
@@ -333,9 +301,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isIncomeTaxSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
-                }
+                } 
             }
             if (req.body.companyDetails.currentOutstandingLoan) {
                 data.companyDetails.currentOutstandingLoan.name = req.body.companyDetails.currentOutstandingLoan.name ? req.body.companyDetails.currentOutstandingLoan.name : req.body.companyDetails.currentOutstandingLoan?.name == '' ? '' : data.companyDetails.currentOutstandingLoan.name;
@@ -344,9 +310,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isCurrentOutStandingLoan"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } else {
-                    data.profileCompletion = data.profileCompletion - 3.68;
-                }
+                } 
             }
             if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {
                 data['isBussinesKYCDone'] = true;

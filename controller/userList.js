@@ -44,3 +44,21 @@ exports.filterData = async (req, res, next) => {
 		});
 	}
 };
+exports.getUserById = async (req, res, next) => {
+    try {
+        const userData = await userModel.findOne({ _id: req.body.id }).select('-__v -_id').lean();
+        if (!userData) {
+            apiResponse = response.generate(constants.ERROR, messages.USER.INVALIDUSER, constants.HTTP_NOT_FOUND, null)
+            res.status(400).send(apiResponse);
+        }
+        else {
+            apiResponse = response.generate(constants.SUCCESS, messages.USER.FETCHEDSUCCESS, constants.HTTP_SUCCESS, userData);
+            res.status(200).send(apiResponse);
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 'fails',
+            message: err.message,
+        });
+    }
+};

@@ -47,10 +47,10 @@ let registration = async (req, res) => {
                     product: req.body.product,
                 }
             });
-            let userData = await createUser.save().then();
+            await createUser.save().then();
             await sendOTP(req, res)
-            let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, userData)
-            res.status(200).send(apiResponse)
+            // let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, userData)
+            // res.status(200).send(apiResponse)
         }
         else {
             let apiResponse;
@@ -509,7 +509,7 @@ let sendOTP = async (req, res, next) => {
                 .send(msg)
                 .then(() => {
                     console.log('Email sent')
-                    apiResponse = response.generate1(constants.SUCCESS, obtainUser ? obtainUser.adminName : null, `your OTP sent to this ${req.body.userId} mail Successfully`, constants.HTTP_SUCCESS, null);
+                    apiResponse = response.generate1(constants.SUCCESS, obtainUser ? obtainUser.adminName : null, `your OTP sent to this ${req.body.userId} mail Successfully`, constants.HTTP_SUCCESS, obtainUser);
                 })
                 .catch((error) => {
                     console.error(error)

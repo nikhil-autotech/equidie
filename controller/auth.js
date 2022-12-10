@@ -5,6 +5,7 @@ const { constants, messages } = require("../constants.js");
 const jwt = require('jsonwebtoken');
 const accessTokenSecret = 'youraccesstokensecret';
 const passwordUtil = require("../utils/password");
+const buildResponse = require("../utils/buildResponse");
 const userModel = require('../model/user');
 const userListModel = require('../model/userList');
 const path = require('path');
@@ -22,7 +23,7 @@ let registration = async (req, res) => {
         if (!isUserExist) {
             let createUser = isTrue ? new userModel({
                 _id: new mongoose.Types.ObjectId(),
-                role: req.body.role ? req.body.role: 'User',
+                role: req.body.role ? req.body.role : 'User',
                 password: req.body.password,
                 orgName: req.body.orgName,
                 product: req.body.product,
@@ -35,7 +36,7 @@ let registration = async (req, res) => {
 
             }) : new userModel({
                 _id: new mongoose.Types.ObjectId(),
-                role: req.body.role ? req.body.role: 'User',
+                role: req.body.role ? req.body.role : 'User',
                 password: req.body.password,
                 orgName: req.body.orgName,
                 product: req.body.product,
@@ -211,7 +212,7 @@ let personalKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCPersonal["isPANSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } 
+                }
             }
             if (req.body.aadhar) {
                 data.aadhar.name = req.body.aadhar.name ? req.body.aadhar.name : req.body.aadhar?.name == '' ? '' : data.aadhar.name;
@@ -222,7 +223,7 @@ let personalKYC = async (req, res) => {
                     data.KYCPersonal["isAadharSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
                 }
-                
+
             }
             if (data.KYCPersonal["isPANSubmitted"] == true && data.KYCPersonal["isAadharSubmitted"] == true) {
                 data["isPersonalKYCDone"] = true;
@@ -257,7 +258,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isPANSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } 
+                }
             }
             if (req.body.companyDetails.udhyamDetails) {
                 data.companyDetails.udhyamDetails.name = req.body.companyDetails.udhyamDetails.name ? req.body.companyDetails.udhyamDetails.name : req.body.companyDetails.udhyamDetails?.name == '' ? '' : data.companyDetails.udhyamDetails.name;
@@ -267,7 +268,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["udhyamDetailsSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } 
+                }
             }
             if (req.body.companyDetails.GST) {
                 data.companyDetails.GST.name = req.body.companyDetails.GST.name ? req.body.companyDetails.GST.name : req.body.companyDetails.GST?.name == '' ? '' : data.companyDetails.GST.name;
@@ -277,7 +278,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isGSTSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } 
+                }
             }
             if (req.body.companyDetails.bankDetails) {
                 data.companyDetails.bankDetails.bankStatement.name = req.body.companyDetails.bankDetails.bankStatement.name ? req.body.companyDetails.bankDetails.bankStatement.name : req.body.companyDetails.bankDetails.bankStatement?.name == '' ? '' : data.companyDetails.bankDetails.bankStatement.name;
@@ -286,7 +287,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isStatementSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } 
+                }
             }
             if (req.body.companyDetails.profitLossStatement) {
                 data.companyDetails.profitLossStatement.name = req.body.companyDetails.profitLossStatement.name ? req.body.companyDetails.profitLossStatement.name : req.body.companyDetails.profitLossStatement?.name == '' ? '' : data.companyDetails.profitLossStatement.name;
@@ -295,7 +296,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isProfitLossSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } 
+                }
             }
             if (req.body.companyDetails.incomeTaxReturn) {
                 data.companyDetails.incomeTaxReturn.name = req.body.companyDetails.incomeTaxReturn.name ? req.body.companyDetails.incomeTaxReturn.name : req.body.companyDetails.incomeTaxReturn?.name == '' ? '' : data.companyDetails.incomeTaxReturn.name;
@@ -304,7 +305,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isIncomeTaxSubmitted"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } 
+                }
             }
             if (req.body.companyDetails.currentOutstandingLoan) {
                 data.companyDetails.currentOutstandingLoan.name = req.body.companyDetails.currentOutstandingLoan.name ? req.body.companyDetails.currentOutstandingLoan.name : req.body.companyDetails.currentOutstandingLoan?.name == '' ? '' : data.companyDetails.currentOutstandingLoan.name;
@@ -313,7 +314,7 @@ let businessKYC = async (req, res) => {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isCurrentOutStandingLoan"] = true;
                     data.profileCompletion = data.profileCompletion + 3.68;
-                } 
+                }
             }
             if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {
                 data['isBussinesKYCDone'] = true;
@@ -583,8 +584,15 @@ let verifyOTP = async (req, res, next) => {
 let getById = async (req, res, next) => {
     try {
         const { id } = req.params;
+        let isTrue = regex.test(req.params.id);
         let apiResponse;
-        const userData = await userModel.findOne({ _id: id }).select('-__v -_id').lean() 
+        let userData;
+        if (req.params.isUserId) {
+            userData = await userModel.findOne({ _id: id }).select('-__v').lean();
+        }
+        else {
+            userData = isTrue ? await userModel.findOne({ email: req.body.userId }).lean() : await userModel.findOne({ mobile: req.body.userId }).lean();
+        }
         if (!userData) {
             apiResponse = response.generate(constants.ERROR, messages.USER.INVALIDUSER, constants.HTTP_NOT_FOUND, null)
             res.status(400).send(apiResponse);
@@ -592,6 +600,7 @@ let getById = async (req, res, next) => {
         }
         else {
             userData.userId = userData.email ? userData.email : userData.mobile ? userData.mobile : null;
+            // userData = await buildResponse(userData);
             apiResponse = response.generate(constants.SUCCESS, messages.USER.FETCHEDSUCCESS, constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);
             return
@@ -618,14 +627,13 @@ let accountActivation = async (req, res, next) => {
         else {
             userData.isKYCVerificationInProgress = 'PROGRESS';
             userData = await userData.save();
-            let createUser =  new userListModel({
+            let createUser = new userListModel({
                 _id: new mongoose.Types.ObjectId(),
                 comapanyName: userData.companyDetails.name,
                 userId: userData._id,
                 registrationDate: userData.createdAt,
             })
             await createUser.save().then();
-            
             apiResponse = response.generate(constants.SUCCESS, "success", constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);
             return

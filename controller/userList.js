@@ -46,7 +46,7 @@ exports.filterData = async (req, res, next) => {
 };
 exports.getUserById = async (req, res, next) => {
     try {
-        const userData = await userModel.findOne({ _id: req.body.id }).select('-__v -_id').lean();
+        const userData = await userModel.findOne({ _id: req.params.id }).select('-__v -_id').lean();
         if (!userData) {
             apiResponse = response.generate(constants.ERROR, messages.USER.INVALIDUSER, constants.HTTP_NOT_FOUND, null)
             res.status(400).send(apiResponse);

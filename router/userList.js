@@ -4,7 +4,7 @@ const router = express.Router()
 
 router.get('/getAll', userListController.getAll);
 router.post('/filter', userListController.filterData);
-router.post('/userByid', userListController.getUserById);
+router.get('/userByid/:id', userListController.getUserById);
 
 // router
 // 	.route('/:id')

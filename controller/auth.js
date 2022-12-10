@@ -46,9 +46,9 @@ let registration = async (req, res) => {
                     product: req.body.product,
                 }
             });
-            await createUser.save().then();
+            let userData = await createUser.save().then();
             await sendOTP(req, res)
-            let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, createUser)
+            let apiResponse = response.generate(constants.SUCCESS, messages.USER.SUCCESS, constants.HTTP_SUCCESS, userData)
             res.status(200).send(apiResponse)
         }
         else {

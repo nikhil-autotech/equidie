@@ -88,6 +88,7 @@ app.get('/checkenv', (req, res) => {
 // app.use(protect);
 
 app.use('/api/auth', require('./router/auth'));
+app.use('/api/userList', require('./router/userList'));
 
 app.use('/', image);
 

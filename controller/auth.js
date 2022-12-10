@@ -584,8 +584,7 @@ let getById = async (req, res, next) => {
     try {
         const { id } = req.params;
         let apiResponse;
-        let isTrue = regex.test(id);
-        const userData = isTrue ? await userModel.findOne({ email: id }).select('-__v -_id').lean() : await userModel.findOne({ mobile: id }).select('-__v -_id').lean();
+        const userData = await userModel.findOne({ _id: id }).select('-__v -_id').lean() 
         if (!userData) {
             apiResponse = response.generate(constants.ERROR, messages.USER.INVALIDUSER, constants.HTTP_NOT_FOUND, null)
             res.status(400).send(apiResponse);

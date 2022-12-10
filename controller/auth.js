@@ -587,7 +587,7 @@ let getById = async (req, res, next) => {
         let isTrue = regex.test(id);
         let apiResponse;
         let userData;
-        if (req.query.isUserId==true) {
+        if (req.query.isUserId==='true') {
             userData = await userModel.findOne({ _id: id }).select('-__v').lean();
         }
         else {

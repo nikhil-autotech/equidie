@@ -86,7 +86,15 @@ const userSchema = mongoose.Schema({
                 file: {
                     type: String,
                     default: ''
-                }
+                },
+                status: {
+                    type: String,
+                    enum:['Verified','Rejected']
+                },
+                message: {
+                    type: String,
+                    default: ''
+                },
             },
             default: {}
         },
@@ -104,7 +112,15 @@ const userSchema = mongoose.Schema({
                 file: {
                     type: String,
                     default: ''
-                }
+                },
+                status: {
+                    type: String,
+                    enum:['Verified','Rejected']
+                },
+                message: {
+                    type: String,
+                    default: ''
+                },
             },
             default: {}
         },
@@ -122,7 +138,15 @@ const userSchema = mongoose.Schema({
                 file: {
                     type: String,
                     default: ''
-                }
+                },
+                status: {
+                    type: String,
+                    enum:['Verified','Rejected']
+                },
+                message: {
+                    type: String,
+                    default: ''
+                },
             },
             default: {}
         },
@@ -136,7 +160,15 @@ const userSchema = mongoose.Schema({
                 file: {
                     type: String,
                     default: ''
-                }
+                },
+                status: {
+                    type: String,
+                    enum:['Verified','Rejected']
+                },
+                message: {
+                    type: String,
+                    default: ''
+                },
             },
             default: {}
         },
@@ -167,7 +199,15 @@ const userSchema = mongoose.Schema({
                     file: {
                         type: String,
                         default: ''
-                    }
+                    },
+                    status: {
+                        type: String,
+                        enum:['Verified','Rejected']
+                    },
+                    message: {
+                        type: String,
+                        default: ''
+                    },
                 },
                 default: {}
             }
@@ -182,7 +222,15 @@ const userSchema = mongoose.Schema({
                 file: {
                     type: String,
                     default: ''
-                }
+                },
+                status: {
+                    type: String,
+                    enum:['Verified','Rejected']
+                },
+                message: {
+                    type: String,
+                    default: ''
+                },
             },
             default: {}
         },
@@ -196,7 +244,15 @@ const userSchema = mongoose.Schema({
                 file: {
                     type: String,
                     default: ''
-                }
+                },
+                status: {
+                    type: String,
+                    enum:['Verified','Rejected']
+                },
+                message: {
+                    type: String,
+                    default: ''
+                },
             },
             default: {}
         },
@@ -215,7 +271,15 @@ const userSchema = mongoose.Schema({
             file: {
                 type: String,
                 default: ''
-            }
+            },
+            status: {
+                type: String,
+                enum:['Verified','Rejected']
+            },
+            message: {
+                type: String,
+                default: ''
+            },
         },
         default: {}
     },
@@ -233,7 +297,15 @@ const userSchema = mongoose.Schema({
             file: {
                 type: String,
                 default: ''
-            }
+            },
+            status: {
+                type: String,
+                enum:['Verified','Rejected']
+            },
+            message: {
+                type: String,
+                default: ''
+            },
         },
         default: {}
     },

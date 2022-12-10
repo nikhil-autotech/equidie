@@ -6,9 +6,10 @@ const jwt = require('jsonwebtoken');
 const accessTokenSecret = 'youraccesstokensecret';
 const passwordUtil = require("../utils/password");
 const userModel = require('../model/user');
+const userListModel = require('../model/userList');
 const path = require('path');
 const fs = require('fs');
-const sgMail = require('@sendgrid/mail')
+const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 
@@ -558,6 +559,11 @@ let verifyOTP = async (req, res, next) => {
                     res.status(500).send({ message: 'User does not Exist' })
                 }
                 else {
+                    if (isTrue) {
+                        obtainUser.isEmail = true;
+                    } else {
+                        obtainUser.isMobile = true;
+                    }
                     obtainUser.otpVerified = true;
                     obtainUser = await obtainUser.save();
                     apiResponse = response.generate1(constants.SUCCESS, obtainUser.adminName, `OTP matched successfully`, constants.HTTP_SUCCESS, { token: token });
@@ -612,7 +618,15 @@ let accountActivation = async (req, res, next) => {
         }
         else {
             userData.isKYCVerificationInProgress = 'PROGRESS';
-            userData = await userData.save()
+            userData = await userData.save();
+            let createUser =  new userListModel({
+                _id: new mongoose.Types.ObjectId(),
+                comapanyName: userData.companyDetails.name,
+                userId: userData._id,
+                registrationDate: userData.createdAt,
+            })
+            await createUser.save().then();
+            
             apiResponse = response.generate(constants.SUCCESS, "success", constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);
             return

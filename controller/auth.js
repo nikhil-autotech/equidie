@@ -584,14 +584,14 @@ let verifyOTP = async (req, res, next) => {
 let getById = async (req, res, next) => {
     try {
         const { id } = req.params;
-        let isTrue = regex.test(req.params.id);
+        let isTrue = regex.test(id);
         let apiResponse;
         let userData;
-        if (req.params.isUserId) {
+        if (req.query.isUserId==true) {
             userData = await userModel.findOne({ _id: id }).select('-__v').lean();
         }
         else {
-            userData = isTrue ? await userModel.findOne({ email: req.body.userId }).lean() : await userModel.findOne({ mobile: req.body.userId }).lean();
+            userData = isTrue ? await userModel.findOne({ email: id }).lean() : await userModel.findOne({ mobile: id }).lean();
         }
         if (!userData) {
             apiResponse = response.generate(constants.ERROR, messages.USER.INVALIDUSER, constants.HTTP_NOT_FOUND, null)

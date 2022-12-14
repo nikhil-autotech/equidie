@@ -5,6 +5,7 @@ const router = express.Router()
 router.get('/getAll', userListController.getAll);
 router.post('/filter', userListController.filterData);
 router.get('/userByid/:id', userListController.getUserById);
+router.post('/verify', userListController.verify);
 
 // router
 // 	.route('/:id')

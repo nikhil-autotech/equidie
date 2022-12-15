@@ -50,6 +50,7 @@ function buildResponse(body) {
     data.isMobile=body.isMobile;
     data.role=body.role;
     data.userId=body.userId;
+    data.profileCompletion=body.profileCompletion;
     data._id=body._id; 
 
     return data;

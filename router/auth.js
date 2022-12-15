@@ -9,6 +9,8 @@ router.post('/reset-password', authController.resetPassword);
 router.post('/reset-known-password', authController.resetPasswordKnownPass);
 router.post('/sendOTP', authController.sendOTP);
 router.post('/verifyOTP', authController.verifyOTP);
+router.get('/IFSCValidation/:code', authController.ifscValidation);
+// router.post('/bankAccountValidation', authController.bankAccountValidation);
 router.post('/checkEmail', authController.checkEmail);
 router.post('/companyDetails', authController.companyDetails);
 router.post('/personalKYC', authController.personalKYC);

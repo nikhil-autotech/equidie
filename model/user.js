@@ -256,6 +256,15 @@ const userSchema = mongoose.Schema({
             },
             default: {}
         },
+        zip: {
+            type: Number,
+        },
+        city: {
+            type: String,
+        },
+        state: {
+            type: String,
+        },
     },
     PAN: {
         type: {
@@ -308,6 +317,15 @@ const userSchema = mongoose.Schema({
             },
         },
         default: {}
+    },
+    zip: {
+        type: Number,
+    },
+    city: {
+        type: String,
+    },
+    state: {
+        type: String,
     },
     isPersonalKYCDone: {
         type: Boolean,

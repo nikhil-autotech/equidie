@@ -8,8 +8,7 @@ const passwordUtil = require("../utils/password");
 const buildResponse = require("../utils/buildResponse");
 const userModel = require('../model/user');
 const userListModel = require('../model/userList');
-const path = require('path');
-const fs = require('fs');
+const axios = require('axios');
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
@@ -140,6 +139,9 @@ let companyDetails = async (req, res) => {
             data.companyDetails.yearOfIncorporation = req.body.companyDetails.yearOfIncorporation ? req.body.companyDetails.yearOfIncorporation : req.body.companyDetails?.yearOfIncorporation == '' ? '' : data.companyDetails.yearOfIncorporation;
             data.companyDetails.industryType = req.body.companyDetails.industryType ? req.body.companyDetails.industryType : req.body.companyDetails?.industryType == '' ? '' : data.companyDetails.industryType;
             data.companyDetails.licenseNumber = req.body.companyDetails.licenseNumber ? req.body.companyDetails.licenseNumber : req.body.companyDetails?.licenseNumber == '' ? '' : data.companyDetails.licenseNumber;
+            data.companyDetails.zip = req.body.companyDetails.zip ? req.body.companyDetails.zip : req.body.companyDetails?.zip == '' ? '' : data.companyDetails.zip;
+            data.companyDetails.city = req.body.companyDetails.city ? req.body.companyDetails.city : req.body.companyDetails?.city == '' ? '' : data.companyDetails.city;
+            data.companyDetails.state = req.body.companyDetails.state ? req.body.companyDetails.state : req.body.companyDetails?.state == '' ? '' : data.companyDetails.state;
             if (data.companyDetails.name && data.companyDetails.product && data.companyDetails.yearOfIncorporation && data.companyDetails.industryType && data.companyDetails.licenseNumber && data.companyDetails.GST.GSTNumber && data.companyDetails.PAN.panNumber && data.companyDetails.udhyamDetails.udhyamNumber && data.companyDetails.bankDetails.bankName && data.companyDetails.address) {
                 data["isAllCompanyInfoAvailable"] = true;
                 data.profileCompletion = profileCompletion + 36.8;
@@ -587,7 +589,7 @@ let getById = async (req, res, next) => {
         let isTrue = regex.test(id);
         let apiResponse;
         let userData;
-        if (req.query.isUserId==='true') {
+        if (req.query.isUserId === 'true') {
             userData = await userModel.findOne({ _id: id }).select('-__v').lean();
         }
         else {
@@ -612,6 +614,69 @@ let getById = async (req, res, next) => {
         });
     }
 };
+
+let ifscValidation = async (req, res, next) => {
+    try {
+        let apiResponse;
+        const data = await axios({
+            url: `https://api.sandbox.co.in/bank/${req.params.code}`,
+            method: 'GET'
+        });
+        if (data.data) {
+            apiResponse = response.generate(constants.SUCCESS, "success", constants.HTTP_SUCCESS, data.data);
+            res.status(200).send(apiResponse);
+        } else {
+            apiResponse = response.generate(constants.SUCCESS, "try after some time", constants.HTTP_SUCCESS, null);
+            res.status(200).send(apiResponse);
+        }
+    } catch (err) {
+        if (err.isAxiosError == true && err.response.status == 404) {
+            apiResponse = response.generate(constants.SUCCESS, "send correct IFSC Code", constants.HTTP_SUCCESS, response.data);
+            res.status(406).send(apiResponse);
+        } else {
+            res.status(400).json({
+                status: 'fails',
+                message: err.message,
+            });
+        }
+    }
+};
+
+// let bankAccountValidation = async (req, res, next) => {
+//     try {
+//         let apiResponse;
+//         const data =await axios({
+//             url: `https://test-api.sandbox.co.in/bank/${req.body.IFSC}/accounts/${req.body.accountNumber}/penniless-verify`,
+//             method: 'GET',
+//             headers: {
+//                 'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJBUEkiLCJyZWZyZXNoX3Rva2VuIjoiZXlKaGJHY2lPaUpJVXpVeE1pSjkuZXlKaGRXUWlPaUpCVUVraUxDSnpkV0lpT2lKclpYbGZiR2wyWlY5QlpHVXFLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtsVjRjeUlzSW1Gd2FWOXJaWGtpT2lKclpYbGZiR2wyWlY5QlpHVXFLaW9xS2lvcUtpb3FLaW9xS2lvcUtpb3FLaW9xS2lvcUtsVjRjeUlzSW1semN5STZJbUZ3YVM1eGRXbGphMjh1WTI5dElpd2laWGh3SWpveE5Ua3dPVFk1TmpBd0xDSnBiblJsYm5RaU9pSlNSVVpTUlZOSVgxUlBTMFZPSWl3aWFXRjBJam94TlRVNU16UTNNakF3ZlEueHNmYkhQTERFRlRvTy1OUWdaUUpLM25OUjFxdlhvWmhaOHRqS3gzSExydjZiVkJaMHpJZEZ5ai1MUTg1YnJZS0xXQnFnZHlzZ1NDSXlDUXNtV2VOYkEiLCJzdWIiOiJqb2huQGRvZS5jb20iLCJhcGlfa2V5Ijoia2V5X2xpdmVfQWRlKioqKioqKioqKioqKioqKioqKioqKioqKipVeHMiLCJpc3MiOiJhcGkucXVpY2tvLmNvbSIsImV4cCI6MTU5MTA1NjAwMCwiaW50ZW50IjoiQUNDRVNTX1RPS0VOIiwiaWF0IjoxNTkwOTY5NjAwfQ.nH23CR5RHGQ0U19I_vq3vyJ_85A1a2iEMQij5QHgJQdDuS9x7FmTidsr1CQabSFF5ujE40SFxHv1gJM20TauUw',
+//                 // 'Authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJBUEkiLCJzdWIiOiJrZXlfbGl2ZV9BZGUqKioqKioqKioqKioqKioqKioqKioqKioqKlV4cyIsImFwaV9rZXkiOiJrZXlfbGl2ZV9BZGUqKioqKioqKioqKioqKioqKioqKioqKioqKlV4cyIsImlzcyI6ImFwaS5xdWlja28uY29tIiwiZXhwIjoxNTkwOTY5NjAwLCJpbnRlbnQiOiJSRUZSRVNIX1RPS0VOIiwiaWF0IjoxNTU5MzQ3MjAwfQ.xsfbHPLDEFToO-NQgZQJK3nNR1qvXoZhZ8tjKx3HLrv6bVBZ0zIdFyj-LQ85brYKLWBqgdysgSCIyCQsmWeNbA',
+//                 'x-api-version': '1.0.0',
+//                 'x-api-key': 'key_live_Ade**************************Uxs',
+//                 'Accept': '*/*',
+//                 'Content-Type': 'application/json',
+//                 'Accept-Encoding': 'application/json',
+//             }
+//         });
+//         if (data.data) {
+//             apiResponse = response.generate(constants.SUCCESS, "success", constants.HTTP_SUCCESS, data.data);
+//             res.status(200).send(apiResponse);
+//         } else {
+//             apiResponse = response.generate(constants.SUCCESS, "try after some time", constants.HTTP_SUCCESS, null);
+//             res.status(200).send(apiResponse);
+//         }
+//     } catch (err) {
+//         if (err.isAxiosError == true && err.response.status == 404) {
+//             apiResponse = response.generate(constants.SUCCESS, "send correct IFSC Code", constants.HTTP_SUCCESS, response.data);
+//             res.status(406).send(apiResponse);
+//         } else {
+//             res.status(400).json({
+//                 status: 'fails',
+//                 message: err.message,
+//             });
+//         }
+//     }
+// };
 
 let accountActivation = async (req, res, next) => {
     try {
@@ -748,5 +813,7 @@ module.exports = {
     resetPasswordKnownPass,
     personalKYC,
     businessKYC,
-    accountActivation
+    accountActivation,
+    ifscValidation,
+    bankAccountValidation
 }

@@ -642,6 +642,33 @@ let ifscValidation = async (req, res, next) => {
     }
 };
 
+let zipValidation = async (req, res, next) => {
+    try {
+        let apiResponse;
+        const data = await axios({
+            url: `https://app.zipcodebase.com/api/v1/search?apikey=035d47c0-7c74-11ed-a0b9-670d7d474fee&country=IN&codes=${req.params.code}`,
+            method: 'GET'
+        });
+        if (data.data.results) {
+            apiResponse = response.generate(constants.SUCCESS, "success", constants.HTTP_SUCCESS, data.data.results[`${req.params.code}`][0]);
+            res.status(200).send(apiResponse);
+        } else {
+            apiResponse = response.generate(constants.SUCCESS, "try after some time", constants.HTTP_SUCCESS, null);
+            res.status(200).send(apiResponse);
+        }
+    } catch (err) {
+        if (err.isAxiosError == true && err.response.status == 404) {
+            apiResponse = response.generate(constants.SUCCESS, "send correct IFSC Code", constants.HTTP_SUCCESS, response.data);
+            res.status(406).send(apiResponse);
+        } else {
+            res.status(400).json({
+                status: 'fails',
+                message: err.message,
+            });
+        }
+    }
+};
+
 // let bankAccountValidation = async (req, res, next) => {
 //     try {
 //         let apiResponse;
@@ -815,5 +842,6 @@ module.exports = {
     businessKYC,
     accountActivation,
     ifscValidation,
-    bankAccountValidation
+    // bankAccountValidation,
+    zipValidation
 }

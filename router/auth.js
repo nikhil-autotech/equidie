@@ -10,6 +10,7 @@ router.post('/reset-known-password', authController.resetPasswordKnownPass);
 router.post('/sendOTP', authController.sendOTP);
 router.post('/verifyOTP', authController.verifyOTP);
 router.get('/IFSCValidation/:code', authController.ifscValidation);
+router.get('/zipValidation/:code', authController.zipValidation);
 // router.post('/bankAccountValidation', authController.bankAccountValidation);
 router.post('/checkEmail', authController.checkEmail);
 router.post('/companyDetails', authController.companyDetails);

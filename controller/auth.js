@@ -600,7 +600,7 @@ let getById = async (req, res, next) => {
         }
         else {
             userData.userId = userData.email ? userData.email : userData.mobile ? userData.mobile : null;
-            // userData = await buildResponse(userData);
+            userData = await buildResponse(userData);
             apiResponse = response.generate(constants.SUCCESS, messages.USER.FETCHEDSUCCESS, constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);
             return

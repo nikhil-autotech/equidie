@@ -12,15 +12,15 @@ function buildResponse(body) {
     if(body.email){data.basicInformation.email=body.email}else if(body.mobile){data.basicInformation.mobile=body.mobile}
     
     data.companyInformation.name=body.companyDetails.name;
-    data.companyInformation.product=body.companyDetails.name;
-    data.companyInformation.yearOfIncorporation=body.companyDetails.name;
-    data.companyInformation.licenseNumber=body.companyDetails.name;
-    data.companyInformation.industryType=body.companyDetails.name;
-    data.companyInformation.address=body.companyDetails.name;
-    data.companyInformation.bankDetails=body.companyDetails.name;
-    data.companyInformation.GST=body.companyDetails.name;
-    data.companyInformation.PAN=body.companyDetails.name;
-    data.companyInformation.udhyamDetails=body.companyDetails.name;
+    data.companyInformation.product=body.companyDetails.product;
+    data.companyInformation.yearOfIncorporation=body.companyDetails.yearOfIncorporation;
+    data.companyInformation.licenseNumber=body.companyDetails.licenseNumber;
+    data.companyInformation.industryType=body.companyDetails.industryType;
+    data.companyInformation.address=body.companyDetails.address;
+    data.companyInformation.bankDetails=body.companyDetails.bankDetails;
+    data.companyInformation.GST=body.companyDetails.GST;
+    data.companyInformation.PAN=body.companyDetails.PAN;
+    data.companyInformation.udhyamDetails=body.companyDetails.udhyamDetails;
 
     data.document.personalKYC.PAN=body.PAN;
     data.document.personalKYC.PAN.isPANSubmitted=body.KYCPersonal.isPANSubmitted;

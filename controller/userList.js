@@ -90,10 +90,10 @@ exports.verify = async (req, res, next) => {
             userData.companyDetails.profitLossStatement.message = req.body.businessKYC.profitLossStatement.message ? req.body.businessKYC.profitLossStatement.message : '';
             userData.companyDetails.incomeTaxReturn.status = req.body.businessKYC.incomeTaxReturn.status;
             userData.companyDetails.incomeTaxReturn.message = req.body.businessKYC.incomeTaxReturn.message ? req.body.businessKYC.incomeTaxReturn.message : '';
-            userData = await userData.save();
 
             if (userData.PAN.status == 'Verified' && userData.aadhar.status == 'Verified' && userData.companyDetails.PAN.status == 'Verified' && userData.companyDetails.udhyamDetails.status == 'Verified' && userData.companyDetails.GST.status == 'Verified' && userData.companyDetails.currentOutstandingLoan.status == 'Verified' && userData.companyDetails.bankDetails.bankStatement.status == 'Verified' && userData.companyDetails.profitLossStatement.status == 'Verified' && userData.companyDetails.incomeTaxReturn.status == 'Verified') 
             {
+                userData.isKYCVerificationInProgress ='DONE';
                 await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Completed' } }, { new: true });
             }
             else if (userData.PAN.status == 'Verified' || userData.aadhar.status == 'Verified' || userData.companyDetails.PAN.status == 'Verified' || userData.companyDetails.udhyamDetails.status == 'Verified' || userData.companyDetails.GST.status == 'Verified' || userData.companyDetails.currentOutstandingLoan.status == 'Verified' || userData.companyDetails.bankDetails.bankStatement.status == 'Verified' || userData.companyDetails.profitLossStatement.status == 'Verified' || userData.companyDetails.incomeTaxReturn.status == 'Verified') 
@@ -101,8 +101,10 @@ exports.verify = async (req, res, next) => {
                 await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Updated By MSME' } }, { new: true });
             }
             else {
+                userData.isKYCVerificationInProgress ='FAILED';
                 await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Rejected' } }, { new: true });
             }
+            userData = await userData.save();
             apiResponse = response.generate(constants.SUCCESS, messages.USER.FETCHEDSUCCESS, constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);
         }

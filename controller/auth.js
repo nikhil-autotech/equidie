@@ -134,6 +134,9 @@ let companyDetails = async (req, res) => {
                 }
             }
             data.companyDetails.bankDetails.bankName = req.body.companyDetails.bankDetails?.bankName ? req.body.companyDetails.bankDetails.bankName : req.body.companyDetails.bankDetails?.bankName == '' ? '' : data.companyDetails.bankDetails.bankName;
+            data.companyDetails.bankDetails.branchName = req.body.companyDetails.bankDetails?.branchName ? req.body.companyDetails.bankDetails.branchName : req.body.companyDetails.bankDetails?.branchName == '' ? '' : data.companyDetails.bankDetails.branchName;
+            data.companyDetails.bankDetails.accountNumber = req.body.companyDetails.bankDetails?.accountNumber ? req.body.companyDetails.bankDetails.accountNumber : req.body.companyDetails.bankDetails?.accountNumber == '' ? '' : data.companyDetails.bankDetails.accountNumber;
+            data.companyDetails.bankDetails.IFSC = req.body.companyDetails.bankDetails?.IFSC ? req.body.companyDetails.bankDetails.IFSC : req.body.companyDetails.bankDetails?.IFSC == '' ? '' : data.companyDetails.bankDetails.IFSC;
             data.companyDetails.name = req.body.companyDetails.name ? req.body.companyDetails.name : req.body.companyDetails?.name == '' ? '' : data.companyDetails.name;
             data.companyDetails.address = req.body.companyDetails.address ? req.body.companyDetails.address : req.body.companyDetails?.address == '' ? '' : data.companyDetails.address;
             data.companyDetails.product = req.body.companyDetails.product ? req.body.companyDetails.product : req.body.companyDetails?.product == '' ? '' : data.companyDetails.product;

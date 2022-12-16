@@ -667,7 +667,7 @@ let ifscValidation = async (req, res, next) => {
 let zipValidation = async (req, res, next) => {
     try {
         let apiResponse;
-        const data = await zipCodeModel.findOne({ Pincode: parseInt(req.params.code) }) 
+        const data = await zipCodeModel.findOne({ Pincode: parseInt(req.params.code) })
         if (data) {
             apiResponse = response.generate(constants.SUCCESS, "success", constants.HTTP_SUCCESS, data);
             res.status(200).send(apiResponse);
@@ -676,10 +676,62 @@ let zipValidation = async (req, res, next) => {
             res.status(200).send(apiResponse);
         }
     } catch (err) {
-            res.status(400).json({
-                status: 'fails',
-                message: err.message,
-            });
+        res.status(400).json({
+            status: 'fails',
+            message: err.message,
+        });
+    }
+};
+
+let gstValidation = async (req, res, next) => {
+    try {
+        let apiResponse;
+        const data = await axios({
+            url: `https://commonapi.mastersindia.co/commonapis/searchgstin?gstin=${req.params.gst}`,
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer 0ab31ef7392227173c6e8d34195e86d5eb0da1e9',
+                'client_id': 'JarZChUcsytSBbnkpt'
+            }
+        });
+        if (data) {
+            apiResponse = response.generate(constants.SUCCESS, "success", constants.HTTP_SUCCESS, data.data.data);
+            res.status(200).send(apiResponse);
+        } else {
+            apiResponse = response.generate(constants.SUCCESS, "try after some time", constants.HTTP_SUCCESS, null);
+            res.status(200).send(apiResponse);
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 'fails',
+            message: err.message,
+        });
+    }
+};
+
+let panValidation = async (req, res, next) => {
+    try {
+        let apiResponse;
+        const data = await axios({
+            url: `https://commonapi.mastersindia.co/commonapis/pandetail?pan=${req.params.pan}`,
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer 0ab31ef7392227173c6e8d34195e86d5eb0da1e9',
+                'client_id': 'JarZChUcsytSBbnkpt'
+            }
+        });
+        if (data && data.data.data.response.number) {
+            apiResponse = response.generate(constants.SUCCESS, "success", constants.HTTP_SUCCESS, data.data.data);
+            res.status(200).send(apiResponse);
+        } else {
+            apiResponse = response.generate(constants.SUCCESS, data.data.data.response.message, constants.HTTP_SUCCESS, null);
+            res.status(404).send(apiResponse);
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 'fails',
+            message: err.message,
+        });
     }
 };
 
@@ -857,5 +909,7 @@ module.exports = {
     accountActivation,
     ifscValidation,
     // bankAccountValidation,
-    zipValidation
+    zipValidation,
+    gstValidation,
+    panValidation
 }

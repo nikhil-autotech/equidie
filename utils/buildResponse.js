@@ -53,6 +53,7 @@ function buildResponse(body) {
     data.isBussinesKYCDone=body.isBussinesKYCDone;
     data.isEmail=body.isEmail;
     data.isKYCPartial=body.isKYCPartial;
+    data.isPersonalKYCDone=body.isPersonalKYCDone;
     data.isKYCVerificationInProgress=body.isKYCVerificationInProgress;
     data.isMobile=body.isMobile;
     data.role=body.role;

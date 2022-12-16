@@ -133,54 +133,72 @@ let companyDetails = async (req, res) => {
                     data.KYCBussiness["isCurrentOutStandingLoan"] = true;
                 }
             }
-            data.companyDetails.bankDetails.bankName = req.body.companyDetails.bankDetails?.bankName ? req.body.companyDetails.bankDetails.bankName : req.body.companyDetails.bankDetails?.bankName == '' ? '' : data.companyDetails.bankDetails.bankName;
-            data.companyDetails.bankDetails.branchName = req.body.companyDetails.bankDetails?.branchName ? req.body.companyDetails.bankDetails.branchName : req.body.companyDetails.bankDetails?.branchName == '' ? '' : data.companyDetails.bankDetails.branchName;
-            data.companyDetails.bankDetails.accountNumber = req.body.companyDetails.bankDetails?.accountNumber ? req.body.companyDetails.bankDetails.accountNumber : req.body.companyDetails.bankDetails?.accountNumber == '' ? '' : data.companyDetails.bankDetails.accountNumber;
-            data.companyDetails.bankDetails.IFSC = req.body.companyDetails.bankDetails?.IFSC ? req.body.companyDetails.bankDetails.IFSC : req.body.companyDetails.bankDetails?.IFSC == '' ? '' : data.companyDetails.bankDetails.IFSC;
             data.companyDetails.name = req.body.companyDetails.name ? req.body.companyDetails.name : req.body.companyDetails?.name == '' ? '' : data.companyDetails.name;
-            data.companyDetails.address = req.body.companyDetails.address ? req.body.companyDetails.address : req.body.companyDetails?.address == '' ? '' : data.companyDetails.address;
             data.companyDetails.product = req.body.companyDetails.product ? req.body.companyDetails.product : req.body.companyDetails?.product == '' ? '' : data.companyDetails.product;
             data.companyDetails.yearOfIncorporation = req.body.companyDetails.yearOfIncorporation ? req.body.companyDetails.yearOfIncorporation : req.body.companyDetails?.yearOfIncorporation == '' ? '' : data.companyDetails.yearOfIncorporation;
             data.companyDetails.industryType = req.body.companyDetails.industryType ? req.body.companyDetails.industryType : req.body.companyDetails?.industryType == '' ? '' : data.companyDetails.industryType;
             data.companyDetails.licenseNumber = req.body.companyDetails.licenseNumber ? req.body.companyDetails.licenseNumber : req.body.companyDetails?.licenseNumber == '' ? '' : data.companyDetails.licenseNumber;
+            // data.companyDetails.bankDetails.bankName = req.body.companyDetails.bankDetails?.bankName ? req.body.companyDetails.bankDetails.bankName : req.body.companyDetails.bankDetails?.bankName == '' ? '' : data.companyDetails.bankDetails.bankName;
+            data.companyDetails.bankDetails.accountNumber = req.body.companyDetails.bankDetails?.accountNumber ? req.body.companyDetails.bankDetails.accountNumber : req.body.companyDetails.bankDetails?.accountNumber == '' ? '' : data.companyDetails.bankDetails.accountNumber;
+            data.companyDetails.bankDetails.IFSC = req.body.companyDetails.bankDetails?.IFSC ? req.body.companyDetails.bankDetails.IFSC : req.body.companyDetails.bankDetails?.IFSC == '' ? '' : data.companyDetails.bankDetails.IFSC;
+            data.companyDetails.bankDetails.branchName = req.body.companyDetails.bankDetails?.branchName ? req.body.companyDetails.bankDetails.branchName : req.body.companyDetails.bankDetails?.branchName == '' ? '' : data.companyDetails.bankDetails.branchName;
+            data.companyDetails.address = req.body.companyDetails.address ? req.body.companyDetails.address : req.body.companyDetails?.address == '' ? '' : data.companyDetails.address;
             data.companyDetails.zip = req.body.companyDetails.zip ? req.body.companyDetails.zip : req.body.companyDetails?.zip == '' ? '' : data.companyDetails.zip;
             data.companyDetails.city = req.body.companyDetails.city ? req.body.companyDetails.city : req.body.companyDetails?.city == '' ? '' : data.companyDetails.city;
             data.companyDetails.state = req.body.companyDetails.state ? req.body.companyDetails.state : req.body.companyDetails?.state == '' ? '' : data.companyDetails.state;
-            if (data.companyDetails.name && data.companyDetails.product && data.companyDetails.yearOfIncorporation && data.companyDetails.industryType && data.companyDetails.licenseNumber && data.companyDetails.GST.GSTNumber && data.companyDetails.PAN.panNumber && data.companyDetails.udhyamDetails.udhyamNumber && data.companyDetails.bankDetails.bankName && data.companyDetails.address) {
+            if (data.companyDetails.name && data.companyDetails.product && data.companyDetails.yearOfIncorporation && data.companyDetails.industryType && data.companyDetails.licenseNumber && data.companyDetails.GST.GSTNumber && data.companyDetails.PAN.panNumber && data.companyDetails.udhyamDetails.udhyamNumber && data.companyDetails.bankDetails.accountNumber && data.companyDetails.bankDetails.IFSC && data.companyDetails.bankDetails.branchName && data.companyDetails.address && data.companyDetails.zip && data.companyDetails.city && data.companyDetails.state) { //&& data.companyDetails.bankDetails.bankName
                 data["isAllCompanyInfoAvailable"] = true;
-                data.profileCompletion = profileCompletion + 36.8;
+                data.profileCompletion = profileCompletion + 43.75;
             }
             else {
                 data["isAllCompanyInfoAvailable"] = false;
                 if (data.companyDetails.name) {
-                    profileCompletion = profileCompletion + 3.68;
+                    profileCompletion = profileCompletion + 2.91;
                 }
                 if (data.companyDetails.product) {
-                    profileCompletion = profileCompletion + 3.68;
+                    profileCompletion = profileCompletion + 2.91;
                 }
                 if (data.companyDetails.yearOfIncorporation) {
-                    profileCompletion = profileCompletion + 3.68;
+                    profileCompletion = profileCompletion + 2.91;
                 }
                 if (data.companyDetails.industryType) {
-                    profileCompletion = profileCompletion + 3.68;
+                    profileCompletion = profileCompletion + 2.91;
                 }
                 if (data.companyDetails.licenseNumber) {
-                    profileCompletion = profileCompletion + 3.68;
+                    profileCompletion = profileCompletion + 2.91;
                 }
                 if (data.companyDetails.GST.GSTNumber) {
-                    profileCompletion = profileCompletion + 3.68;
+                    profileCompletion = profileCompletion + 2.91;
                 }
                 if (data.companyDetails.udhyamDetails.udhyamNumber) {
-                    profileCompletion = profileCompletion + 3.68;
+                    profileCompletion = profileCompletion + 2.91;
                 }
                 if (data.companyDetails.PAN.panNumber) {
-                    profileCompletion = profileCompletion + 3.68;
+                    profileCompletion = profileCompletion + 2.91;
                 }
-                if (data.companyDetails.bankDetails.bankName) {
-                    profileCompletion = profileCompletion + 3.68;
+                // if (data.companyDetails.bankDetails.bankName) {
+                //     profileCompletion = profileCompletion + 2.91;
+                // }
+                if (data.companyDetails.bankDetails.accountNumber) {
+                    profileCompletion = profileCompletion + 2.91;
+                }
+                if (data.companyDetails.bankDetails.IFSC) {
+                    profileCompletion = profileCompletion + 2.91;
+                }
+                if (data.companyDetails.bankDetails.branchName) {
+                    profileCompletion = profileCompletion + 2.91;
                 }
                 if (data.companyDetails.address) {
-                    profileCompletion = profileCompletion + 3.68;
+                    profileCompletion = profileCompletion + 2.91;
+                }
+                if (data.companyDetails.zip) {
+                    profileCompletion = profileCompletion + 2.91;
+                }
+                if (data.companyDetails.city) {
+                    profileCompletion = profileCompletion + 2.91;
+                }
+                if (data.companyDetails.state) {
+                    profileCompletion = profileCompletion + 2.91;
                 }
                 data.profileCompletion = profileCompletion;
             }
@@ -217,7 +235,7 @@ let personalKYC = async (req, res) => {
                 if (data.PAN.name && data.PAN.file) {
                     data.isKYCPartial = true;
                     data.KYCPersonal["isPANSubmitted"] = true;
-                    data.profileCompletion = data.profileCompletion + 3.68;
+                    data.profileCompletion = data.profileCompletion + 2.91;
                 }
             }
             if (req.body.aadhar) {
@@ -227,7 +245,7 @@ let personalKYC = async (req, res) => {
                 if (data.aadhar.name && data.aadhar.file) {
                     data.isKYCPartial = true;
                     data.KYCPersonal["isAadharSubmitted"] = true;
-                    data.profileCompletion = data.profileCompletion + 3.68;
+                    data.profileCompletion = data.profileCompletion + 2.91;
                 }
 
             }
@@ -263,7 +281,7 @@ let businessKYC = async (req, res) => {
                 if (data.companyDetails.PAN.name && data.companyDetails.PAN.panNumber && data.companyDetails.PAN.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isPANSubmitted"] = true;
-                    data.profileCompletion = data.profileCompletion + 3.68;
+                    data.profileCompletion = data.profileCompletion + 2.91;
                 }
             }
             if (req.body.companyDetails.udhyamDetails) {
@@ -273,7 +291,7 @@ let businessKYC = async (req, res) => {
                 if (data.companyDetails.udhyamDetails.name && data.companyDetails.udhyamDetails.udhyamNumber && data.companyDetails.udhyamDetails.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["udhyamDetailsSubmitted"] = true;
-                    data.profileCompletion = data.profileCompletion + 3.68;
+                    data.profileCompletion = data.profileCompletion + 2.91;
                 }
             }
             if (req.body.companyDetails.GST) {
@@ -283,7 +301,7 @@ let businessKYC = async (req, res) => {
                 if (data.companyDetails.GST.name && data.companyDetails.GST.GSTNumber && data.companyDetails.GST.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isGSTSubmitted"] = true;
-                    data.profileCompletion = data.profileCompletion + 3.68;
+                    data.profileCompletion = data.profileCompletion + 2.91;
                 }
             }
             if (req.body.companyDetails.bankDetails) {
@@ -292,7 +310,7 @@ let businessKYC = async (req, res) => {
                 if (data.companyDetails.bankDetails.bankStatement.name && data.companyDetails.bankDetails.bankStatement.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isStatementSubmitted"] = true;
-                    data.profileCompletion = data.profileCompletion + 3.68;
+                    data.profileCompletion = data.profileCompletion + 2.91;
                 }
             }
             if (req.body.companyDetails.profitLossStatement) {
@@ -301,7 +319,7 @@ let businessKYC = async (req, res) => {
                 if (data.companyDetails.profitLossStatement.name && data.companyDetails.profitLossStatement.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isProfitLossSubmitted"] = true;
-                    data.profileCompletion = data.profileCompletion + 3.68;
+                    data.profileCompletion = data.profileCompletion + 2.91;
                 }
             }
             if (req.body.companyDetails.incomeTaxReturn) {
@@ -310,7 +328,7 @@ let businessKYC = async (req, res) => {
                 if (data.companyDetails.incomeTaxReturn.name && data.companyDetails.incomeTaxReturn.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isIncomeTaxSubmitted"] = true;
-                    data.profileCompletion = data.profileCompletion + 3.68;
+                    data.profileCompletion = data.profileCompletion + 2.91;
                 }
             }
             if (req.body.companyDetails.currentOutstandingLoan) {
@@ -319,7 +337,7 @@ let businessKYC = async (req, res) => {
                 if (data.companyDetails.currentOutstandingLoan.name && data.companyDetails.currentOutstandingLoan.file) {
                     data.isKYCPartial = true;
                     data.KYCBussiness["isCurrentOutStandingLoan"] = true;
-                    data.profileCompletion = data.profileCompletion + 3.68;
+                    data.profileCompletion = data.profileCompletion + 2.91;
                 }
             }
             if (data.KYCBussiness.isPANSubmitted == true && data.KYCBussiness.udhyamDetailsSubmitted == true && data.KYCBussiness.isGSTSubmitted == true && data.KYCBussiness.isStatementSubmitted == true && data.KYCBussiness.isProfitLossSubmitted == true && data.KYCBussiness.isIncomeTaxSubmitted == true && data.KYCBussiness.isCurrentOutStandingLoan == true) {

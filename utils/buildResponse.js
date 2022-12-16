@@ -9,6 +9,10 @@ function buildResponse(body) {
     };
     data.basicInformation.adminName=body.adminName;
     data.basicInformation.designation=body.designation;
+    data.basicInformation.zip=body.zip;
+    data.basicInformation.city=body.city;
+    data.basicInformation.state=body.state;
+    data.basicInformation.address=body.address;
     if(body.email){data.basicInformation.email=body.email}else if(body.mobile){data.basicInformation.mobile=body.mobile}
     
     data.companyInformation.name=body.companyDetails.name;
@@ -21,6 +25,9 @@ function buildResponse(body) {
     data.companyInformation.GST=body.companyDetails.GST;
     data.companyInformation.PAN=body.companyDetails.PAN;
     data.companyInformation.udhyamDetails=body.companyDetails.udhyamDetails;
+    data.companyInformation.zip=body.companyDetails.zip;
+    data.companyInformation.city=body.companyDetails.city;
+    data.companyInformation.state=body.companyDetails.state;
 
     data.document.personalKYC.PAN=body.PAN;
     data.document.personalKYC.PAN.isPANSubmitted=body.KYCPersonal.isPANSubmitted;

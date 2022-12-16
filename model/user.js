@@ -47,6 +47,10 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    address: {
+        type: String,
+        default: ''
+    },
     companyDetails: {
         name: {
             type: String,

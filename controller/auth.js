@@ -1374,15 +1374,21 @@ let accountActivation = async (req, res, next) => {
             res.status(400).send(apiResponse);
             return;
         } else {
-            userData.isKYCVerificationInProgress = "PROGRESS";
-            userData = await userData.save();
-            let createUser = new userListModel({
-                _id: new mongoose.Types.ObjectId(),
-                comapanyName: userData.companyDetails.name,
-                userId: userData._id,
-                registrationDate: userData.createdAt,
-            });
-            await createUser.save().then();
+
+            let userListData = await userListModel.findOne({ userId: userData._id });
+            if (!userListData) {
+                userData.isKYCVerificationInProgress = "PROGRESS";
+                userData = await userData.save();
+                let createUser = new userListModel({
+                    _id: new mongoose.Types.ObjectId(),
+                    comapanyName: userData.companyDetails.name,
+                    userId: userData._id,
+                    registrationDate: userData.createdAt,
+                });
+                await createUser.save().then();
+            }
+
+
             apiResponse = response.generate(
                 constants.SUCCESS,
                 "success",

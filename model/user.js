@@ -93,7 +93,7 @@ const userSchema = mongoose.Schema({
                 },
                 status: {
                     type: String,
-                    enum:['Verified','Rejected']
+                    enum:['Verified','Rejected','Updated By MSME']
                 },
                 message: {
                     type: String,
@@ -119,7 +119,7 @@ const userSchema = mongoose.Schema({
                 },
                 status: {
                     type: String,
-                    enum:['Verified','Rejected']
+                    enum:['Verified','Rejected','Updated By MSME']
                 },
                 message: {
                     type: String,
@@ -145,7 +145,7 @@ const userSchema = mongoose.Schema({
                 },
                 status: {
                     type: String,
-                    enum:['Verified','Rejected']
+                    enum:['Verified','Rejected','Updated By MSME']
                 },
                 message: {
                     type: String,
@@ -167,7 +167,7 @@ const userSchema = mongoose.Schema({
                 },
                 status: {
                     type: String,
-                    enum:['Verified','Rejected']
+                    enum:['Verified','Rejected','Updated By MSME']
                 },
                 message: {
                     type: String,
@@ -206,7 +206,7 @@ const userSchema = mongoose.Schema({
                     },
                     status: {
                         type: String,
-                        enum:['Verified','Rejected']
+                        enum:['Verified','Rejected','Updated By MSME']
                     },
                     message: {
                         type: String,
@@ -229,7 +229,7 @@ const userSchema = mongoose.Schema({
                 },
                 status: {
                     type: String,
-                    enum:['Verified','Rejected']
+                    enum:['Verified','Rejected','Updated By MSME']
                 },
                 message: {
                     type: String,
@@ -251,7 +251,7 @@ const userSchema = mongoose.Schema({
                 },
                 status: {
                     type: String,
-                    enum:['Verified','Rejected']
+                    enum:['Verified','Rejected','Updated By MSME']
                 },
                 message: {
                     type: String,
@@ -287,7 +287,7 @@ const userSchema = mongoose.Schema({
             },
             status: {
                 type: String,
-                enum:['Verified','Rejected']
+                enum:['Verified','Rejected','Updated By MSME']
             },
             message: {
                 type: String,
@@ -313,7 +313,7 @@ const userSchema = mongoose.Schema({
             },
             status: {
                 type: String,
-                enum:['Verified','Rejected']
+                enum:['Verified','Rejected','Updated By MSME']
             },
             message: {
                 type: String,

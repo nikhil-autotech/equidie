@@ -4,6 +4,7 @@ const { constants, messages } = require("../constants.js");
 const APIFeatures = require('../utils/apiFeatures');
 const userListModel = require('../model/userList');
 const userModel = require('../model/user');
+const moment = require('moment');
 
 
 exports.getAll = async (req, res, next) => {
@@ -145,7 +146,10 @@ exports.checkUncheckDoc = async (req, res, next) => {
                 userData.companyDetails.incomeTaxReturn.hasAdminChecked = req.body.businessKYC.incomeTaxReturn.value;
             }
 
-            userData = await userData.save();
+            userData = await userModel
+                .findOneAndUpdate({ _id: req.body.id }, userData, { new: true })
+                .lean()
+            // userData = await userData.save();
             apiResponse = response.generate(constants.SUCCESS, messages.USER.FETCHEDSUCCESS, constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);
         }
@@ -156,3 +160,92 @@ exports.checkUncheckDoc = async (req, res, next) => {
         });
     }
 };
+
+exports.mapData = async (req, res, next) => {
+    try {
+        const features = new APIFeatures(userListModel.find({}), req.query)
+            .sort()
+            .limitFields()
+            .paginate()
+            .filter();
+        let userListData = await features.query;
+
+        if (req.query.term == 'yearly') {
+
+            let currentDate = moment();
+            let oldDate = moment().subtract(1, 'year');
+
+            userListData = userListData.filter(ele => {
+
+                let regisdate = moment(ele.registrationDate);
+                if (oldDate < regisdate && regisdate < currentDate) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        } else if (req.query.term == 'monthly') {
+
+            let currentDate = moment();
+            let oldDate = moment().subtract(1, 'month');
+
+            userListData = userListData.filter(ele => {
+
+                let regisdate = moment(ele.registrationDate);
+                if (oldDate < regisdate && regisdate < currentDate) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+        } else {
+
+            let currentDate = moment();
+            let oldDate = moment().subtract(1, 'week');
+
+            userListData = userListData.filter(ele => {
+
+                let regisdate = moment(ele.registrationDate);
+                if (oldDate < regisdate && regisdate < currentDate) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+        }
+
+        let formedObject = groupBy(userListData, 'status');
+
+        let keys = Object.keys(formedObject);
+
+        if (keys && keys.length) {
+            keys.forEach(val => {
+                formedObject[val] = formedObject[val].length;
+            })
+        }
+
+        const responeData = JSON.parse(JSON.stringify(formedObject));
+
+        let apiResponse = response.generate(constants.SUCCESS, `Fetched Successfully`, constants.HTTP_SUCCESS, responeData);
+        res.status(200).send(apiResponse)
+    } catch (error) {
+        res.json({
+            status: 400,
+            message: error.message,
+        });
+    }
+};
+
+function groupBy(objectArray, property) {
+    return objectArray.reduce((acc, obj) => {
+        const key = obj[property];
+        if (!acc[key]) {
+            acc[key] = [];
+        }
+        // Add object to list for given key's value
+        acc[key].push(obj);
+        return acc;
+    }, {});
+}

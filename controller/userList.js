@@ -125,23 +125,23 @@ exports.checkUncheckDoc = async (req, res, next) => {
         }
         else {
 
-            if (req.body.personalKYC.PAN) {
+            if (req.body.personalKYC?.PAN) {
                 userData.PAN.hasAdminChecked = req.body.personalKYC.PAN.value;
-            } else if (req.body.personalKYC.aadhar) {
+            } else if (req.body.personalKYC?.aadhar) {
                 userData.aadhar.hasAdminChecked = req.body.personalKYC.aadhar.value;
-            } else if (req.body.businessKYC.PAN) {
+            } else if (req.body.businessKYC?.PAN) {
                 userData.companyDetails.PAN.hasAdminChecked = req.body.businessKYC.PAN.value;
-            } else if (req.body.businessKYC.udhyamDetails) {
+            } else if (req.body.businessKYC?.udhyamDetails) {
                 userData.companyDetails.udhyamDetails.hasAdminChecked = req.body.businessKYC.udhyamDetails.value;
-            } else if (req.body.businessKYC.GST) {
+            } else if (req.body.businessKYC?.GST) {
                 userData.companyDetails.GST.hasAdminChecked = req.body.businessKYC.GST.value;
-            } else if (req.body.businessKYC.currentOutstandingLoan) {
+            } else if (req.body.businessKYC?.currentOutstandingLoan) {
                 userData.companyDetails.currentOutstandingLoan.hasAdminChecked = req.body.businessKYC.currentOutstandingLoan.value;
-            } else if (req.body.businessKYC.bankStatement) {
+            } else if (req.body.businessKYC?.bankStatement) {
                 userData.companyDetails.bankDetails.bankStatement.hasAdminChecked = req.body.businessKYC.bankStatement.value;
-            } else if (req.body.businessKYC.profitLossStatement) {
+            } else if (req.body.businessKYC?.profitLossStatement) {
                 userData.companyDetails.profitLossStatement.hasAdminChecked = req.body.businessKYC.profitLossStatement.value;
-            } else if (req.body.businessKYC.incomeTaxReturn) {
+            } else if (req.body.businessKYC?.incomeTaxReturn) {
                 userData.companyDetails.incomeTaxReturn.hasAdminChecked = req.body.businessKYC.incomeTaxReturn.value;
             }
 

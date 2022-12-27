@@ -1386,8 +1386,12 @@ let accountActivation = async (req, res, next) => {
                     registrationDate: userData.createdAt,
                 });
                 await createUser.save().then();
+            }else{
+                userData.isKYCVerificationInProgress = "PROGRESS";
+                userData = await userData.save();
+                userListData.status = 'Updated By MSME';
+                await userListData.save().then();
             }
-
 
             apiResponse = response.generate(
                 constants.SUCCESS,

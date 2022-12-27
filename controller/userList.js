@@ -99,7 +99,7 @@ exports.verify = async (req, res, next) => {
             else if (userData.PAN.status == 'Verified' || userData.aadhar.status == 'Verified' || userData.companyDetails.PAN.status == 'Verified' || userData.companyDetails.udhyamDetails.status == 'Verified' || userData.companyDetails.GST.status == 'Verified' || userData.companyDetails.currentOutstandingLoan.status == 'Verified' || userData.companyDetails.bankDetails.bankStatement.status == 'Verified' || userData.companyDetails.profitLossStatement.status == 'Verified' || userData.companyDetails.incomeTaxReturn.status == 'Verified') 
                 {
                     userData.isKYCVerificationInProgress ='FAILED';
-                await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Updated By MSME' } }, { new: true });
+                await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Rejected' } }, { new: true });
             }
             else {
                 userData.isKYCVerificationInProgress ='FAILED';

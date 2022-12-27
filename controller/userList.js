@@ -146,10 +146,7 @@ exports.checkUncheckDoc = async (req, res, next) => {
                 userData.companyDetails.incomeTaxReturn.hasAdminChecked = req.body.businessKYC.incomeTaxReturn.value;
             }
 
-            userData = await userModel
-                .findOneAndUpdate({ _id: req.body.id }, userData, { new: true })
-                .lean()
-            // userData = await userData.save();
+            userData = await userData.save();
             apiResponse = response.generate(constants.SUCCESS, messages.USER.FETCHEDSUCCESS, constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);
         }

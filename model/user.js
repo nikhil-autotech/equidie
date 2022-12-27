@@ -95,6 +95,10 @@ const userSchema = mongoose.Schema({
                     type: String,
                     enum:['Verified','Rejected','Updated By MSME']
                 },
+                hasAdminChecked:{
+                    type:Boolean,
+                    default:false
+                },
                 message: {
                     type: String,
                     default: ''
@@ -120,6 +124,10 @@ const userSchema = mongoose.Schema({
                 status: {
                     type: String,
                     enum:['Verified','Rejected','Updated By MSME']
+                },
+                hasAdminChecked:{
+                    type:Boolean,
+                    default:false
                 },
                 message: {
                     type: String,
@@ -147,6 +155,10 @@ const userSchema = mongoose.Schema({
                     type: String,
                     enum:['Verified','Rejected','Updated By MSME']
                 },
+                hasAdminChecked:{
+                    type:Boolean,
+                    default:false
+                },
                 message: {
                     type: String,
                     default: ''
@@ -168,6 +180,10 @@ const userSchema = mongoose.Schema({
                 status: {
                     type: String,
                     enum:['Verified','Rejected','Updated By MSME']
+                },
+                hasAdminChecked:{
+                    type:Boolean,
+                    default:false
                 },
                 message: {
                     type: String,
@@ -208,6 +224,10 @@ const userSchema = mongoose.Schema({
                         type: String,
                         enum:['Verified','Rejected','Updated By MSME']
                     },
+                    hasAdminChecked:{
+                        type:Boolean,
+                        default:false
+                    },
                     message: {
                         type: String,
                         default: ''
@@ -231,6 +251,10 @@ const userSchema = mongoose.Schema({
                     type: String,
                     enum:['Verified','Rejected','Updated By MSME']
                 },
+                hasAdminChecked:{
+                    type:Boolean,
+                    default:false
+                },
                 message: {
                     type: String,
                     default: ''
@@ -252,6 +276,10 @@ const userSchema = mongoose.Schema({
                 status: {
                     type: String,
                     enum:['Verified','Rejected','Updated By MSME']
+                },
+                hasAdminChecked:{
+                    type:Boolean,
+                    default:false
                 },
                 message: {
                     type: String,
@@ -289,6 +317,10 @@ const userSchema = mongoose.Schema({
                 type: String,
                 enum:['Verified','Rejected','Updated By MSME']
             },
+            hasAdminChecked:{
+                type:Boolean,
+                default:false
+            },
             message: {
                 type: String,
                 default: ''
@@ -314,6 +346,10 @@ const userSchema = mongoose.Schema({
             status: {
                 type: String,
                 enum:['Verified','Rejected','Updated By MSME']
+            },
+            hasAdminChecked:{
+                type:Boolean,
+                default:false
             },
             message: {
                 type: String,

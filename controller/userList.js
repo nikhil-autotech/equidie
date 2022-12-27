@@ -91,20 +91,60 @@ exports.verify = async (req, res, next) => {
             userData.companyDetails.incomeTaxReturn.status = req.body.businessKYC.incomeTaxReturn.status;
             userData.companyDetails.incomeTaxReturn.message = req.body.businessKYC.incomeTaxReturn.message ? req.body.businessKYC.incomeTaxReturn.message : '';
 
-            if (userData.PAN.status == 'Verified' && userData.aadhar.status == 'Verified' && userData.companyDetails.PAN.status == 'Verified' && userData.companyDetails.udhyamDetails.status == 'Verified' && userData.companyDetails.GST.status == 'Verified' && userData.companyDetails.currentOutstandingLoan.status == 'Verified' && userData.companyDetails.bankDetails.bankStatement.status == 'Verified' && userData.companyDetails.profitLossStatement.status == 'Verified' && userData.companyDetails.incomeTaxReturn.status == 'Verified') 
-            {
-                userData.isKYCVerificationInProgress ='DONE';
+            if (userData.PAN.status == 'Verified' && userData.aadhar.status == 'Verified' && userData.companyDetails.PAN.status == 'Verified' && userData.companyDetails.udhyamDetails.status == 'Verified' && userData.companyDetails.GST.status == 'Verified' && userData.companyDetails.currentOutstandingLoan.status == 'Verified' && userData.companyDetails.bankDetails.bankStatement.status == 'Verified' && userData.companyDetails.profitLossStatement.status == 'Verified' && userData.companyDetails.incomeTaxReturn.status == 'Verified') {
+                userData.isKYCVerificationInProgress = 'DONE';
                 await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Completed' } }, { new: true });
             }
-            else if (userData.PAN.status == 'Verified' || userData.aadhar.status == 'Verified' || userData.companyDetails.PAN.status == 'Verified' || userData.companyDetails.udhyamDetails.status == 'Verified' || userData.companyDetails.GST.status == 'Verified' || userData.companyDetails.currentOutstandingLoan.status == 'Verified' || userData.companyDetails.bankDetails.bankStatement.status == 'Verified' || userData.companyDetails.profitLossStatement.status == 'Verified' || userData.companyDetails.incomeTaxReturn.status == 'Verified') 
-                {
-                    userData.isKYCVerificationInProgress ='FAILED';
+            else if (userData.PAN.status == 'Verified' || userData.aadhar.status == 'Verified' || userData.companyDetails.PAN.status == 'Verified' || userData.companyDetails.udhyamDetails.status == 'Verified' || userData.companyDetails.GST.status == 'Verified' || userData.companyDetails.currentOutstandingLoan.status == 'Verified' || userData.companyDetails.bankDetails.bankStatement.status == 'Verified' || userData.companyDetails.profitLossStatement.status == 'Verified' || userData.companyDetails.incomeTaxReturn.status == 'Verified') {
+                userData.isKYCVerificationInProgress = 'FAILED';
                 await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Rejected' } }, { new: true });
             }
             else {
-                userData.isKYCVerificationInProgress ='FAILED';
+                userData.isKYCVerificationInProgress = 'FAILED';
                 await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Rejected' } }, { new: true });
             }
+            userData = await userData.save();
+            apiResponse = response.generate(constants.SUCCESS, messages.USER.FETCHEDSUCCESS, constants.HTTP_SUCCESS, userData);
+            res.status(200).send(apiResponse);
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 'fails',
+            message: err.message,
+        });
+    }
+};
+
+exports.checkUncheckDoc = async (req, res, next) => {
+    try {
+        let apiResponse;
+        let userData = await userModel.findOne({ _id: req.body.id });
+        if (!userData) {
+            apiResponse = response.generate(constants.ERROR, messages.USER.INVALIDUSER, constants.HTTP_NOT_FOUND, null)
+            res.status(400).send(apiResponse);
+        }
+        else {
+
+            if (req.body.personalKYC.PAN) {
+                userData.PAN.hasAdminChecked = req.body.personalKYC.PAN.value;
+            } else if (req.body.personalKYC.aadhar) {
+                userData.aadhar.hasAdminChecked = req.body.personalKYC.aadhar.value;
+            } else if (req.body.businessKYC.PAN) {
+                userData.companyDetails.PAN.hasAdminChecked = req.body.businessKYC.PAN.value;
+            } else if (req.body.businessKYC.udhyamDetails) {
+                userData.companyDetails.udhyamDetails.hasAdminChecked = req.body.businessKYC.udhyamDetails.value;
+            } else if (req.body.businessKYC.GST) {
+                userData.companyDetails.GST.hasAdminChecked = req.body.businessKYC.GST.value;
+            } else if (req.body.businessKYC.currentOutstandingLoan) {
+                userData.companyDetails.currentOutstandingLoan.hasAdminChecked = req.body.businessKYC.currentOutstandingLoan.value;
+            } else if (req.body.businessKYC.bankStatement) {
+                userData.companyDetails.bankDetails.bankStatement.hasAdminChecked = req.body.businessKYC.bankStatement.value;
+            } else if (req.body.businessKYC.profitLossStatement) {
+                userData.companyDetails.profitLossStatement.hasAdminChecked = req.body.businessKYC.profitLossStatement.value;
+            } else if (req.body.businessKYC.incomeTaxReturn) {
+                userData.companyDetails.incomeTaxReturn.hasAdminChecked = req.body.businessKYC.incomeTaxReturn.value;
+            }
+
             userData = await userData.save();
             apiResponse = response.generate(constants.SUCCESS, messages.USER.FETCHEDSUCCESS, constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);

@@ -111,7 +111,7 @@ exports.verify = async (req, res, next) => {
             }
             userData = await userData.save();
 
-            await dataModel.create().save().then();
+            await dataModel.save().then();
             apiResponse = response.generate(constants.SUCCESS, messages.USER.FETCHEDSUCCESS, constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);
         }

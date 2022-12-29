@@ -1397,7 +1397,7 @@ let accountActivation = async (req, res, next) => {
                 dataModel = await createNotificationData({userId:userData._id,msg:'Updated Rejected Documents',title:userData.companyDetails.name,type:'User'})
             }
 
-            await dataModel.create().save().then();
+            await dataModel.save().then();
             apiResponse = response.generate(
                 constants.SUCCESS,
                 "success",

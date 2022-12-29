@@ -9,30 +9,30 @@ exports.getAll = async (req, res, next) => {
         const features = new APIFeatures(notificationModel.find({}), req.query).sort();
 
         let notificationData = await features.query;
-
+        let mainArray = [];
         if (req.query.role == 'Admin') {
 
             if (notificationData && notificationData.length) {
-                notificationData = notificationData.filter(v => !v.seen && v.type == 'User');
+                mainArray = notificationData.filter(v => !v.seen && v.type == 'User');
             }
 
-            if (notificationData && notificationData.length < 15) {
-                notificationData = [...notificationData,...notificationData.filter(v => v.seen && v.type == 'User')];
+            if (mainArray && mainArray.length < 15) {
+                mainArray = [...mainArray,...notificationData.filter(v => v.seen && v.type == 'User')];
             }
 
-            notificationData = notificationData.slice(0,15);
+            notificationData = mainArray.slice(0,15);
 
         } else if (req.query.role == 'User') {
 
             if (notificationData && notificationData.length) {
-                notificationData = notificationData.filter(v => !v.seen && v.type == 'Admin' && v.userId == req.query.userId);
+                mainArray = notificationData.filter(v => !v.seen && v.type == 'Admin' && v.userId == req.query.userId);
             }
 
-            if (notificationData && notificationData.length < 15) {
-                notificationData = [...notificationData,...notificationData.filter(v => v.seen && v.type == 'Admin' && v.userId == req.query.userId)];
+            if (mainArray && mainArray.length < 15) {
+                mainArray = [...mainArray,...notificationData.filter(v => v.seen && v.type == 'Admin' && v.userId == req.query.userId)];
             }
 
-            notificationData = notificationData.slice(0,15);
+            notificationData = mainArray.slice(0,15);
 
         }
 

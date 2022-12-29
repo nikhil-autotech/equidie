@@ -5,6 +5,7 @@ const APIFeatures = require('../utils/apiFeatures');
 const userListModel = require('../model/userList');
 const userModel = require('../model/user');
 const moment = require('moment');
+const notificationModel = require("../model/notification-logger");
 
 
 exports.getAll = async (req, res, next) => {
@@ -92,19 +93,25 @@ exports.verify = async (req, res, next) => {
             userData.companyDetails.incomeTaxReturn.status = req.body.businessKYC.incomeTaxReturn.status;
             userData.companyDetails.incomeTaxReturn.message = req.body.businessKYC.incomeTaxReturn.message ? req.body.businessKYC.incomeTaxReturn.message : '';
 
+            let dataModel = null;
             if (userData.PAN.status == 'Verified' && userData.aadhar.status == 'Verified' && userData.companyDetails.PAN.status == 'Verified' && userData.companyDetails.udhyamDetails.status == 'Verified' && userData.companyDetails.GST.status == 'Verified' && userData.companyDetails.currentOutstandingLoan.status == 'Verified' && userData.companyDetails.bankDetails.bankStatement.status == 'Verified' && userData.companyDetails.profitLossStatement.status == 'Verified' && userData.companyDetails.incomeTaxReturn.status == 'Verified') {
                 userData.isKYCVerificationInProgress = 'DONE';
                 await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Completed' } }, { new: true });
+                dataModel = await createNotificationData({status:'Completed',userId:req.body.id});
             }
             else if (userData.PAN.status == 'Verified' || userData.aadhar.status == 'Verified' || userData.companyDetails.PAN.status == 'Verified' || userData.companyDetails.udhyamDetails.status == 'Verified' || userData.companyDetails.GST.status == 'Verified' || userData.companyDetails.currentOutstandingLoan.status == 'Verified' || userData.companyDetails.bankDetails.bankStatement.status == 'Verified' || userData.companyDetails.profitLossStatement.status == 'Verified' || userData.companyDetails.incomeTaxReturn.status == 'Verified') {
                 userData.isKYCVerificationInProgress = 'FAILED';
                 await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Rejected' } }, { new: true });
+                dataModel = await createNotificationData({status:'Rejected',userId:req.body.id});
             }
             else {
                 userData.isKYCVerificationInProgress = 'FAILED';
                 await userListModel.findOneAndUpdate({ userId: req.body.id }, { $set: { status: 'Rejected' } }, { new: true });
+                dataModel = await createNotificationData({status:'Rejected',userId:req.body.id});
             }
             userData = await userData.save();
+
+            await dataModel.create().save().then();
             apiResponse = response.generate(constants.SUCCESS, messages.USER.FETCHEDSUCCESS, constants.HTTP_SUCCESS, userData);
             res.status(200).send(apiResponse);
         }
@@ -115,6 +122,20 @@ exports.verify = async (req, res, next) => {
         });
     }
 };
+
+function createNotificationData(data){
+
+    let dataModel = new notificationModel({
+        _id: new mongoose.Types.ObjectId(),
+        msg:data.status == 'Completed' ? 'Congratulations!' : 'Click here to view the report',
+        userId:data.userId,
+        title:data.status == 'Completed' ? 'KYC Verification Done' : 'KYC Verification Failed',
+        type:"Admin",
+        adminStatus:data.status
+    })
+
+    return dataModel;
+}
 
 exports.checkUncheckDoc = async (req, res, next) => {
     try {

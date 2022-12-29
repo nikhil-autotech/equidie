@@ -18,11 +18,10 @@ const notificationLoggerSchema = mongoose.Schema({
     type:{
         type:String,
         enum:["Admin","User"],
-        required:true
     },
     adminStatus:{
         type:String,
-        enum:["Approved","Rejected"]
+        enum:["Completed","Rejected"]
     }         
 }, {
     timestamps: { createdAt: true },

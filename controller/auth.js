@@ -1376,6 +1376,7 @@ let accountActivation = async (req, res, next) => {
         } else {
 
             let userListData = await userListModel.findOne({ userId: userData._id });
+            let dataModel = null;
             if (!userListData) {
                 userData.isKYCVerificationInProgress = "PROGRESS";
                 userData = await userData.save();
@@ -1386,13 +1387,16 @@ let accountActivation = async (req, res, next) => {
                     registrationDate: userData.createdAt,
                 });
                 await createUser.save().then();
+                dataModel = await createNotificationData({userId:userData._id,msg:'Added new request for verification',title:userData.companyDetails.name,type:'User'})
             }else{
                 userData.isKYCVerificationInProgress = "PROGRESS";
                 userData = await userData.save();
                 userListData.status = 'Updated By MSME';
                 await userListData.save().then();
+                dataModel = await createNotificationData({userId:userData._id,msg:'Updated Rejected Documents',title:userData.companyDetails.name,type:'User'})
             }
 
+            await dataModel.create().save().then();
             apiResponse = response.generate(
                 constants.SUCCESS,
                 "success",
@@ -1409,6 +1413,19 @@ let accountActivation = async (req, res, next) => {
         });
     }
 };
+
+function createNotificationData(data){
+
+    let dataModel = new notificationModel({
+        _id: new mongoose.Types.ObjectId(),
+        msg:data.msg,
+        userId:data.userId,
+        title:data.title,
+        type:data.type
+    })
+
+    return dataModel;
+}
 
 let checkEmail = async (req, res, next) => {
     try {

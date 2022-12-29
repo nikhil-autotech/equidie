@@ -1,14 +1,7 @@
 const express = require("express")
-const userListController = require("../controller/userList");
+const notificationController = require("../controller/notification");
 const router = express.Router()
 
-router.get('/getAll', userListController.getAll);
-router.post('/filter', userListController.filterData);
-router.get('/userByid/:id', userListController.getUserById);
-router.post('/verify', userListController.verify);
-
-// router
-// 	.route('/:id')
-// 	.get(userListController.getById)
+router.get('/getAll', notificationController.getAll);
 
 module.exports = router;

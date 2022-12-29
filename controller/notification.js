@@ -16,11 +16,23 @@ exports.getAll = async (req, res, next) => {
                 notificationData = notificationData.filter(v => !v.seen && v.type == 'User');
             }
 
+            if (notificationData && notificationData.length < 15) {
+                notificationData = [...notificationData,...notificationData.filter(v => v.seen && v.type == 'User')];
+            }
+
+            notificationData = notificationData.slice(0,15);
+
         } else if (req.query.role == 'User') {
 
             if (notificationData && notificationData.length) {
-                notificationData = notificationData.filter(v => !v.seen && v.type == 'Admin');
+                notificationData = notificationData.filter(v => !v.seen && v.type == 'Admin' && v.userId == req.query.userId);
             }
+
+            if (notificationData && notificationData.length < 15) {
+                notificationData = [...notificationData,...notificationData.filter(v => v.seen && v.type == 'Admin' && v.userId == req.query.userId)];
+            }
+
+            notificationData = notificationData.slice(0,15);
 
         }
 
@@ -31,7 +43,7 @@ exports.getAll = async (req, res, next) => {
         let copy = [...responeData];
         copy = copy.map(ele => ele._id);
 
-        await notificationModel.updateMany({_id:{$in: copy}},{$set:{seen:true}});
+        await notificationModel.updateMany({ _id: { $in: copy } }, { $set: { seen: true } });
 
         res.status(200).send(apiResponse)
     } catch (error) {

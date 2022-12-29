@@ -7,7 +7,6 @@ const notificationLoggerSchema = mongoose.Schema({
     userId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User',
-		required: true
 	},
     seen:{
         type:Boolean,
@@ -15,6 +14,15 @@ const notificationLoggerSchema = mongoose.Schema({
     },
     title:{
         type:String,
+    },
+    type:{
+        type:String,
+        enum:["Admin","User"],
+        required:true
+    },
+    adminStatus:{
+        type:String,
+        enum:["Approved","Rejected"]
     }         
 }, {
     timestamps: { createdAt: true },

@@ -199,7 +199,7 @@ exports.mapData = async (req, res, next) => {
                 }
             });
 
-        } else {
+        } else if (req.query.term == 'weekly') {
 
             let currentDate = moment();
             let oldDate = moment().subtract(1, 'week');
@@ -214,6 +214,19 @@ exports.mapData = async (req, res, next) => {
                 }
             });
 
+        } else {
+            let currentDate = moment();
+            let oldDate = moment().subtract(1, 'day');
+
+            userListData = userListData.filter(ele => {
+
+                let regisdate = moment(ele.registrationDate);
+                if (oldDate < regisdate && regisdate < currentDate) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
         }
 
         let formedObject = groupBy(userListData, 'status');

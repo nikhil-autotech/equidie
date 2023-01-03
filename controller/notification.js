@@ -53,3 +53,35 @@ exports.getAll = async (req, res, next) => {
         });
     }
 };
+
+exports.deleteNotification = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        let apiResponse;
+        let notificationData = await notificationModel.findOneAndDelete({ _id: id }, { new: true });
+        if (!notificationData) {
+            apiResponse = response.generate(
+                constants.ERROR,
+                messages.USER.INVALIDUSER,
+                constants.HTTP_NOT_FOUND,
+                null
+            );
+            res.status(400).send(apiResponse);
+            return;
+        } else {
+            let apiResponse = response.generate(
+                constants.SUCCESS,
+                messages.USER.DELETEDSUCCESS,
+                constants.HTTP_SUCCESS,
+                notificationData
+            );
+            res.status(200).send(apiResponse);
+            return;
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: err.message,
+        });
+    }
+};

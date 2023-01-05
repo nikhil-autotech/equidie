@@ -90,6 +90,7 @@ app.get('/checkenv', (req, res) => {
 app.use('/api/auth', require('./router/auth'));
 app.use('/api/userList', require('./router/userList'));
 app.use('/api/notification', require('./router/notification'));
+app.use('/api/asset',require("./router/asset"));
 
 app.use('/', image);
 
